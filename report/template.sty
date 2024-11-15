@@ -1,0 +1,47 @@
+\usepackage[top=3cm, bottom=3cm, left = 2cm, right = 2cm]{geometry}
+\geometry{a4paper}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{color}
+\usepackage[pdftex,bookmarks,colorlinks,breaklinks]{hyperref}
+\hypersetup{linkcolor=black, citecolor=black, filecolor=black, linktocpage}
+\usepackage{memhfixc}
+\usepackage{pdfsync}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\headheight}{13.6pt}
+\usepackage{listings}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{references.bib}
+\usepackage{datetime}
+\usepackage{xcolor}
+
+% listings settings for bash
+\lstset{
+	language=bash,            % Specify the language
+	breaklines=true,           % Enable line breaking
+	captionpos=b,              % Caption position at the bottom
+	basicstyle=\ttfamily,      % Use monospaced font
+	literate={-}{-}1           % Ensure dashes render correctly
+}
+
+% Define some useful dates
+\newdate{today}{\day}{\month}{\year}
+\newdate{otherdate}{12}{10}{2024}
+
+% Example: Java listings style
+\lstset{
+	language=java,
+	tabsize=4,
+	showstringspaces=false,
+	commentstyle=\color{gray},
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	rulecolor=\color{black},
+	basicstyle=\small\ttfamily,
+	breaklines=true,
+}
+
