@@ -4,12 +4,10 @@ DIR = ./jinput/
 devcontainer: sonarqube
 	@devcontainer build --workspace-folder .
 	@devcontainer up --workspace-folder .
+	@devcontainer exec --workspace-folder . tmux new-session -A -s dev
 
 sonarqube:
 	@docker start sonarqube-server || docker run --name sonarqube-server -p 9000:9000 sonarqube:lts-community &
-
-attach: devcontainer
-	@devcontainer exec --workspace-folder . tmux new-session -A -s dev
 
 build:
 	cd $(DIR) && $(MAVEN) clean package -pl coreAPI
@@ -26,6 +24,5 @@ export:
     --filter pandoc-crossref \
     --citeproc
 
-
 # Phony targets
-.PHONY: devcontainer build sonarqube attach
+.PHONY: devcontainer build sonarqube
