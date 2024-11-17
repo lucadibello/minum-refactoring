@@ -3,3 +3,6 @@
 
 # jinput temporary files
 .project
+
+# avoid pushing additional toolings
+tools/*.jar
