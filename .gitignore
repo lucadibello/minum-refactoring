@@ -1,2 +1,5 @@
 # SonarQube Scanner Workdir
 .scannerwork/
+
+# jinput temporary files
+.project
