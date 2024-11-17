@@ -1,4 +1,4 @@
-FROM amazoncorretto:17-alpine3.19
+FROM amazoncorretto:21-alpine
 
 # Install required packages + Neovim from registry
 RUN apk add --no-cache \
