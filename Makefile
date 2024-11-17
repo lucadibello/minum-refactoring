@@ -1,5 +1,5 @@
-GRADLE = ./gradlew
-DIR = ./resilience4j
+MAVEN = mvn
+DIR = ./jinput/
 
 devcontainer: sonarqube
 	@devcontainer build --workspace-folder .
@@ -12,7 +12,7 @@ attach: devcontainer
 	@devcontainer exec --workspace-folder . tmux new-session -A -s dev
 
 build:
-	cd $(DIR) && $(GRADLE) build -x test
+	cd $(DIR) && $(MAVEN) clean package -pl coreAPI
 
 export:
 	@cd report && pandoc assignment_report.tex -o ../README.md \
