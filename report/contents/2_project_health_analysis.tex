@@ -38,4 +38,25 @@ Both security hostspots will be addressed in the refactoring process in order to
 
 \subsection{Pattern4j analysis}
 
+After running the Pattern4j tool on the bytecode of the \texttt{CoreAPI} module, a total of 4 design patterns were detected. These include the \textit{Singleton}, \textit{Adapter}, \textit{Observer}, and \textit{Template Method} patterns. Each pattern contributes to the structure and functionality of the module by addressing specific design challenges, such as global instance management, interface adaptation, event-based notification, and algorithm reuse. The following table provides a categorized summary of the detected patterns and their respective roles.
+
+\begin{table}[h!]
+	\centering
+	\label{tab:pattern_summary}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Design Pattern} & \textbf{Purpose}                                                                           \\ \hline
+		Singleton               & Ensures a single instance of \texttt{ControllerEnvironment}.                               \\ \hline
+		Adapter                 & Adapts \texttt{Event} and \texttt{EventQueue} for \texttt{AbstractController}.             \\ \hline
+		Observer                & Implements event-based notification for controller state changes.                          \\ \hline
+		Template Method         & Defines reusable algorithms in \texttt{AbstractComponent} and \texttt{AbstractController}. \\ \hline
+	\end{tabular}
+	\caption{Detected Design Patterns in \texttt{CoreAPI}}
+\end{table}
+
+The presence of these design patterns indicates a structured and well-organized design in the \texttt{CoreAPI} module, providing a foundation for extensibility and maintainability. In the refactoring process, the existing patterns will be preserved and potentially enhanced to improve code clarity and flexibility. Furthermore, new patterns may be introduced to address emerging design challenges and promote code reuse.
+
+\subsection{Project structure}
+
+As cited in \autoref{sec:project_structure}, the \texttt{CoreAPI} module presents a monolithic design, with several classes and interfaces presented in a single package. This design choice may lead to a lack of modularity and separation of concerns, making the codebase harder to maintain and extend. The refactoring process will focus on addressing this issue by splitting the module into smaller, more manageable components, each responsible for a specific aspect of the library.
 

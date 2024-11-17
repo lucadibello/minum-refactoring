@@ -21,26 +21,13 @@ As cited before, in order to accomplish the personal objective set at the beginn
 \noindent \textit{Note}: The data presented above was collected on the \displaydate{collectiondate}, and may have changed since then. Check the project's repository for the most recent information.
 
 \subsection{High-level overview of the project structure}
+\label{sec:project_structure}
 
-% FIXME: The following text needs to be corrected. Poorly written.
+The JInput library is structured into several modular components, designed to provide platform-independent access to input devices in Java applications. Its architecture emphasizes flexibility and extensibility, catering to various operating systems and device types.
 
-The JInput library is organized into several key components, each serving a distinct role in providing platform-independent access to input devices in Java applications.
+The \texttt{CoreAPI} module serves as the foundation of the library, defining the key abstractions for controllers, components, and events. This module establishes a unified API for interacting with input devices, making it the central piece of the framework. By providing consistent interfaces, the \texttt{CoreAPI} ensures seamless integration with platform-specific components while abstracting the complexities of device communication. This module presents a monolithic design, with several classes and interfaces presented in a single package.
 
-The \textbf{Core API} module offers the fundamental interfaces and classes that define the JInput framework. It includes abstractions for controllers, components, and events, establishing a consistent API for interacting with various input devices.
-
-To ensure compatibility across different operating systems, JInput incorporates \textbf{platform-specific plugins} tailored to Windows, Linux, and macOS. These plugins often contain native code to interface directly with the underlying system's input APIs, enabling seamless integration with the host environment.
-
-The \textbf{natives} component comprises the native libraries required by the platform-specific plugins. These native binaries are essential for the plugins to communicate effectively with the operating system's input subsystems.
-
-JInput provides a collection of \textbf{example applications} demonstrating how to utilize the library's features. These examples serve as practical guides for developers to understand and implement JInput in their projects.
-
-A suite of \textbf{unit and integration tests} is included to verify the correctness and reliability of the library's components. These tests ensure that the core API and plugins function as intended across different platforms.
-
-This modular architecture allows developers to integrate JInput into their applications efficiently, selecting only the components relevant to their target platforms and input device requirements.
-
-% The following has already been corrected.
-
-In order concentrate the refactor in a single module, the \emph{Core API} was selected as the main target for the refactor, as it represents the core functionality of the library, thus affecting the majority of users of the library.
+Given its central role in the library, only this module was selected for refactoring, as it would have the most significant impact on the overall design of the project.
 
 \subsection{Additional tools and resources}
 
