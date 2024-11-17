@@ -1,0 +1,49 @@
+This assignment requires the use of the knowledge acquired during the course, in order to refactor an existing open-source project, aiming to improve its design. The behavior of the project should remain unchanged, as well as its input and output interfaces.
+
+The refactoring should target at least 1000 lines of code, and the changes should be documented in a report, and pushed to a separate branch in the project's repository, allowing an easy comparison between the original and refactored versions.
+
+Furthermore, a personal objective was set, aiming to find a recent and active project, with a high number of stars, in order to improve its design and give back to the community. To accomplish this, the project size was analyzed in order to decide whether a complete refactor was feasible.
+
+To find valuable candidates for this assignment, the GitHub search feature was used, filtering the results by language, Java, and the number of stars, between 100 and 1000. The search results were sorted by last update date, in descending order in order to find active projects.
+
+To conclude, each selected project size was analyzed with the web application \href{https://codetabs.com/count-loc/count-loc-online.html}{Count LOC}, in order to count the total lines of code (later referred as \emph{LOC}) that would be affected by the refactor (considering only source code, excluding tests or other utilities).
+
+\subsection{Project selection}
+
+As cited before, in order to accomplish the personal objective set at the beginning of this assignment, the search targeted project with a high number of stars, between 100 and 1000, and written in Java language in order to leverage the knowledge acquired during the course. The search results were sorted by the last update date, in descending order, to find active projects. After an in-depth analysis of results, these are the possible candidates selected for further investigation:
+
+\begin{itemize}
+	\item \href{https://github.com/flanglet/kanzi}{fanglet/kanzi}: Kanzi is a modern, modular and efficiend lossless data compressor implemented entirely in java. It uses state-of-the art entropy coders and multi-threading in order to efficiently utilize multi-core CPUs. The design of the library is modular, allowing to select at runtime the best entropy coder for the data to compress. The project has 109 stars, 18 forks, no open issues, and approximately 20,000 LOC. Kanzi was initially selected for this assignment, but later discarded due to its size.
+	\item \href{https://github.com/byronka/minum}{byronka/minium}: Minium is a minimalistic web framework written in Java, built from scratch using few dependencies. The project provides essential components for web application development, including a web server and an in-memory database with disk persistence. This project was particularly interesting as it emphasizes simplicity and minimalism, which is a good starting point for refactoring as most of the code is written from scratch without complex dependencies. Minium has 611 stars, 38 forks, no open issues, and approximately 9'000 LOC (excluding tests). Due to its size, and lack of open issues, Minium was discarded as a candidate for this assignment.
+	\item \href{https://github.com/jinput/jinput}{jinput/jinput}: JInput is a Java library designed for accessing input devices such as game controllers, joysticks, and other peripherals. It provides a platform-independent API to facilitate the integration of various input devices into Java applications. The project has 150 stars, 79 forks, 29 open issues, and 10,000 lines of code (considering only core functionality, excluding tests). JInput was selected for this assignment, as it has a reasonable size, a good number of open issues and a high number of forks, indicating an active community.
+\end{itemize}
+
+\noindent \textit{Note}: The data presented above was collected on the \displaydate{collectiondate}, and may have changed since then. Check the project's repository for the most recent information.
+
+\subsection{High-level overview of the project structure}
+
+% FIXME: The following text needs to be corrected. Poorly written.
+
+The JInput library is organized into several key components, each serving a distinct role in providing platform-independent access to input devices in Java applications.
+
+The \textbf{Core API} module offers the fundamental interfaces and classes that define the JInput framework. It includes abstractions for controllers, components, and events, establishing a consistent API for interacting with various input devices.
+
+To ensure compatibility across different operating systems, JInput incorporates \textbf{platform-specific plugins} tailored to Windows, Linux, and macOS. These plugins often contain native code to interface directly with the underlying system's input APIs, enabling seamless integration with the host environment.
+
+The \textbf{natives} component comprises the native libraries required by the platform-specific plugins. These native binaries are essential for the plugins to communicate effectively with the operating system's input subsystems.
+
+JInput provides a collection of \textbf{example applications} demonstrating how to utilize the library's features. These examples serve as practical guides for developers to understand and implement JInput in their projects.
+
+A suite of \textbf{unit and integration tests} is included to verify the correctness and reliability of the library's components. These tests ensure that the core API and plugins function as intended across different platforms.
+
+This modular architecture allows developers to integrate JInput into their applications efficiently, selecting only the components relevant to their target platforms and input device requirements.
+
+% The following has already been corrected.
+
+In order concentrate the refactor in a single module, the \emph{Core API} was selected as the main target for the refactor, as it represents the core functionality of the library, thus affecting the majority of users of the library.
+
+\subsection{Additional tools and resources}
+
+In order to perform a comprehensive refactor of the project, the \href{https://www.sonarsource.com/}{SonarQube} static code analysis tool will be used to identify potential code smells, bugs, and vulnerabilities, while also providing insights into the overall code quality. Additionally, in order to have a more in-depth understanding of the current design of the project, the \textit{Pattern4j} tool will be used to detect the use of design patterns in the codebase, an essential aspect of the refactoring process.
+
+The results of both tools provide valuable information to guide the refactor, highlighting areas of improvement and potential refactoring opportunities, and, by combining both outputs, will be possible to have a more comprehensive view of the project's design and code quality.
