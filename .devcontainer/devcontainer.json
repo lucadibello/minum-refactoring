@@ -16,6 +16,6 @@
     }
   ],
   "runArgs": ["--network=host"],
-  "postCreateCommand": "java -version && echo 'Public key:' && cat /root/.ssh/id_ed25519.pub",
+  "postCreateCommand": "java -version && echo 'Public key:' && cat /root/.ssh/id_ed25519.pub && echo 'Maven version:' && mvn -v",
   "remoteUser": "root"
 }

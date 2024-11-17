@@ -5,7 +5,8 @@ RUN apk add --no-cache \
   bash curl tar gzip tmux git openssh zip unzip \
   build-base gcc g++ cmake gettext gettext-dev \
   python3 py3-pip nodejs npm \
-  ripgrep fzf lazygit neovim
+  ripgrep fzf lazygit neovim \
+  maven gradle
 
 # Set working directory for subsequent operations
 WORKDIR /root
