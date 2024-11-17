@@ -4,4 +4,38 @@ As the configuration and usage of both tools is out of the scope of this report,
 
 \subsection{SonarQube analysis}
 
+After running the SonarQube analysis on the \texttt{CoreAPI} module, were detected a total of 26 code smells and 3 security hotspots. The follwing paragraphs will provide an overview of the most relevant code smells detected in the project, and the actions to be taken to address them.
+
+\paragraph*{Code smells} Out of the 26 code smells detected in the project, 11 of them are categorized as critical, 4 as major, and 11 as minor. The following table provides a summary of the found code smells, categorized by severity.
+
+\begin{table}[H]
+	\centering
+	\label{tab:sonarqube_severity_summary}
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{Severity Type} & \textbf{Issues (Count)} \\ \hline
+		\textbf{Major}         &
+		\begin{tabular}[t]{@{}l@{}}
+			Bad Practice (3), Performance (3), Pitfall (3), \\
+			CERT (2), Error Handling (2), Confusing (1),    \\
+			CWE (1), Design (1), Suspicious (1)
+		\end{tabular}  \\ \hline
+		\textbf{Critical}      &
+		Brain Overload (2), CERT (1), Suspicious (1)     \\ \hline
+		\textbf{Minor}         &
+		Convention (9), Brain Overload (1), Clumsy (1)   \\ \hline
+	\end{tabular}
+	\caption{SonarQube Severity Issues Summary}
+\end{table}
+
+\noindent As shown in Table \ref{tab:sonarqube_severity_summary}, the most common code smells in the project are related to bad practices, performance, and error handling. As the total number of code smells is relatively small, the refactoring will take into account all the detected issues, with a special focus on the critical and major ones.
+
+\paragraph*{Security hotspots} The SonarQube analysis also detected 4 security hotspots in the project. Three of them are categorized as \textit{Insecure configuration}, and one as \textit{Log Injection}. The three insecure configuration hotspots are all coming from a common problematic pattern used in the \texttt{ControllerEnvironment} class, where, in case of an exception, the stack trace is printed to the standard output. This behavior can lead to information disclosure, and should be addressed as soon as possible.
+
+The log injection issue on the other hand is related to the use of the \texttt{Logger} class without proper sanitization of the logger name, which can lead to log injection attacks.
+
+Both security hostspots will be addressed in the refactoring process in order to enhance the security of the project.
+
 \subsection{Pattern4j analysis}
+
+
