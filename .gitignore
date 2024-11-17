@@ -6,3 +6,7 @@
 
 # avoid pushing additional toolings
 tools/*.jar
+
+# Ouput of pattern4j tool
+out/
+out/*
