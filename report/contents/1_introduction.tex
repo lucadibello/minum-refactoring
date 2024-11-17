@@ -47,3 +47,16 @@ In order concentrate the refactor in a single module, the \emph{Core API} was se
 In order to perform a comprehensive refactor of the project, the \href{https://www.sonarsource.com/}{SonarQube} static code analysis tool will be used to identify potential code smells, bugs, and vulnerabilities, while also providing insights into the overall code quality. Additionally, in order to have a more in-depth understanding of the current design of the project, the \textit{Pattern4j} tool will be used to detect the use of design patterns in the codebase, an essential aspect of the refactoring process.
 
 The results of both tools provide valuable information to guide the refactor, highlighting areas of improvement and potential refactoring opportunities, and, by combining both outputs, will be possible to have a more comprehensive view of the project's design and code quality.
+
+\subsection{Building the project}
+
+The \emph{jinput} project uses Maven as the build system, and, as the analysis of the project design will target only the \emph{Core API} module, the build process must be focused on this module only. To do so, the following command can be used to build the project:
+
+\begin{center}
+	\begin{minipage}{0.5\textwidth}
+		\begin{lstlisting}[language=bash, caption={Building the project using Maven}]
+    mvn clean install -pl core-api
+  \end{lstlisting}
+	\end{minipage}
+\end{center}
+
