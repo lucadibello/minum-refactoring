@@ -4,33 +4,41 @@ As the configuration and usage of both tools is out of the scope of this report,
 
 \subsection{SonarQube analysis}
 
-After running the SonarQube analysis on the \texttt{CoreAPI} module, were detected a total of 26 code smells and 3 security hotspots. The follwing paragraphs will provide an overview of the most relevant code smells detected in the project, and the actions to be taken to address them.
+After running the SonarQube analysis on the entire Minium codebase (including tests in order to get the test coverage metric), were detected a total of 588 code smells, 26 security hotspots and 34 possible bugs. In the following paragraphs the results will be briefly analyzed in order to plan the refactoring process.
 
-\paragraph*{Code smells} Out of the 26 code smells detected in the project, 11 of them are categorized as critical, 4 as major, and 11 as minor. The following table provides a summary of the found code smells, categorized by severity.
+\paragraph*{Code smells} Out of the 588 code smells detected in the project, 109 of them are categorized as critical, 74 as major, and 405 as minor. \autoref{tab:sonarqube_severity_summary} provides a summary of the found code smells, categorized by severity.
 
 \begin{table}[H]
 	\centering
+	\caption{SonarQube Severity Issues Summary}
 	\label{tab:sonarqube_severity_summary}
-	\begin{tabular}{|c|c|}
+	\begin{tabular}{|c|p{14cm}|}
 		\hline
-		\textbf{Severity Type} & \textbf{Issues (Count)} \\ \hline
+		\textbf{Severity Type} & \textbf{Issues}                                                \\ \hline
+		\textbf{Critical}      &
+		\begin{tabular}[t]{@{}l@{}}
+			design (90), suspicious (10), brain-overload (6) convention (1), multi-threading (1), \\
+			pitfall (1)                                                                           \\
+		\end{tabular}   \\ \hline
 		\textbf{Major}         &
 		\begin{tabular}[t]{@{}l@{}}
-			Bad Practice (3), Performance (3), Pitfall (3), \\
-			CERT (2), Error Handling (2), Confusing (1),    \\
-			CWE (1), Design (1), Suspicious (1)
-		\end{tabular}  \\ \hline
-		\textbf{Critical}      &
-		Brain Overload (2), CERT (1), Suspicious (1)     \\ \hline
+			cert (40), html5 (20), obsolete (19) bad-practice (17), owasp-a3 (17), cwe (16), \\
+			error-handling (15), pitfall (8), suspicious (7) accessibility (5), unused (4),  \\
+			wcag2-a (4) confusing (2), design (2), brain-overload (1)                        \\
+		\end{tabular}        \\ \hline
 		\textbf{Minor}         &
-		Convention (9), Brain Overload (1), Clumsy (1)   \\ \hline
+		\begin{tabular}[t]{@{}l@{}}
+			convention (374), cwe (7), java8 (5), brain-overload (4), pitfall (4), performance (2), \\
+			regex (2), unused (2), bad-practice (1), clumsy (1), suspicious (1)                     \\
+		\end{tabular} \\ \hline
 	\end{tabular}
-	\caption{SonarQube Severity Issues Summary}
 \end{table}
 
-\noindent As shown in Table \ref{tab:sonarqube_severity_summary}, the most common code smells in the project are related to bad practices, performance, and error handling. As the total number of code smells is relatively small, the refactoring will take into account all the detected issues, with a special focus on the critical and major ones.
+\noindent As shown in Table \ref{tab:sonarqube_severity_summary}, the most common code smells in the project are related to Java conventions, design issues, CERT secure coding standards, and the use of HTML5 in comments.
 
-\paragraph*{Security hotspots} The SonarQube analysis also detected 4 security hotspots in the project. Three of them are categorized as \textit{Insecure configuration}, and one as \textit{Log Injection}. The three insecure configuration hotspots are all coming from a common problematic pattern used in the \texttt{ControllerEnvironment} class, where, in case of an exception, the stack trace is printed to the standard output. This behavior can lead to information disclosure, and should be addressed as soon as possible.
+The refactoring of this project will focus on design, convention and brain-overload, as they are more related to the design and organization of the code, and can have a significant impact on the maintainability and readability of the project.
+
+\paragraph*{Security hotspots and bugs} As cited before, the SonarQube scanner detected several bugs and security hotspots in the project. The security hotsposts are related to possible \textit{Denial of Service} attacks leveraging Regular Expressions backtracking and log injection vulnerabilities.
 
 The log injection issue on the other hand is related to the use of the \texttt{Logger} class without proper sanitization of the logger name, which can lead to log injection attacks.
 
@@ -38,25 +46,46 @@ Both security hostspots will be addressed in the refactoring process in order to
 
 \subsection{Pattern4j analysis}
 
-After running the Pattern4j tool on the bytecode of the \texttt{CoreAPI} module, a total of 4 design patterns were detected. These include the \textit{Singleton}, \textit{Adapter}, \textit{Observer}, and \textit{Template Method} patterns. Each pattern contributes to the structure and functionality of the module by addressing specific design challenges, such as global instance management, interface adaptation, event-based notification, and algorithm reuse. The following table provides a categorized summary of the detected patterns and their respective roles.
+Unfortunately, the pattern4j tool was not able to analyze the entire project codebase due to the use of Java 21 features in the project. By running the tool using the custom \texttt{run-pattern4j-headless.sh} script, the following error was raised:
 
-\begin{table}[h!]
-	\centering
-	\label{tab:pattern_summary}
-	\begin{tabular}{|l|l|}
-		\hline
-		\textbf{Design Pattern} & \textbf{Purpose}                                                                           \\ \hline
-		Singleton               & Ensures a single instance of \texttt{ControllerEnvironment}.                               \\ \hline
-		Adapter                 & Adapts \texttt{Event} and \texttt{EventQueue} for \texttt{AbstractController}.             \\ \hline
-		Observer                & Implements event-based notification for controller state changes.                          \\ \hline
-		Template Method         & Defines reusable algorithms in \texttt{AbstractComponent} and \texttt{AbstractController}. \\ \hline
-	\end{tabular}
-	\caption{Detected Design Patterns in \texttt{CoreAPI}}
-\end{table}
+\begin{verbatim}
+Exception in thread "main" java.lang.IllegalArgumentException: Unsupported class file major version 65
+\end{verbatim}
 
-The presence of these design patterns indicates a structured and well-organized design in the \texttt{CoreAPI} module, providing a foundation for extensibility and maintainability. In the refactoring process, the existing patterns will be preserved and potentially enhanced to improve code clarity and flexibility. Furthermore, new patterns may be introduced to address emerging design challenges and promote code reuse.
+\noindent For this reason, the design pattern usage anaylsis will be skipped. Fortunately, this step is not crucial for the refactoring of the project as it would have only provided additional insights into the design of the project rather than pinpointing specific issues.
 
-\subsection{Project structure}
+\subsection{Main Issues and Refactoring Plan}
 
-As cited in \autoref{sec:project_structure}, the \texttt{CoreAPI} module presents a monolithic design, with several classes and interfaces presented in a single package. This design choice may lead to a lack of modularity and separation of concerns, making the codebase harder to maintain and extend. The refactoring process will focus on addressing this issue by splitting the module into smaller, more manageable components, each responsible for a specific aspect of the library.
+In the following sections, the most important code smells and design issues will be presented, along with a refactoring plan to address them. This allows the reader to understand the current state of the project and the steps that will be taken to improve it.
+
+\subsubsection{Codebase Structure}
+
+As cited in \autoref{sec:project_structure}, the project codebase is divided into 10 packages, each with a specific purpose. The overall structure of the codebase is showcase a very thorough organization, with each package containing a set of classes and interfaces related to a specific aspect of the library. However, by inspecting in more detail the structure of single packages four main issues were identified:
+
+\begin{enumerate}
+	\item The framework defines many custom exceptions in order to handle specific errors. These exceptions are scattered across the codebase and are not properly organized. This makes it difficult to understand the error handling mechanism of the library.
+	\item Especially the \texttt{util} package, contains many self-contained classes that perform specific tasks. These classes are properly documented but are not properly organized hierarchically. Also, most of these utility classes have multiple responsabilities (i.e, function to convert a string to bytes, and also methods related to authentication).
+	\item Model classes and interfaces are not properly organized in the \texttt{model} package. Each package contains a set of classes and interfaces related to a specific aspect of the library. This makes packages unnecessarily large and difficult to navigate. A better approach would be to use the a layered-architecture (model, service, repository) to organize the codebase.
+	\item There are test classes inside the \texttt{main} package, which should be moved to the \texttt{test} package. Some of them (i.e., \texttt{FullSystemTests}) have empty methods, without comments or assertions, which should be removed.
+\end{enumerate}
+
+\subsubsection{Java Conventions, Duplicated Code and General Design Issues}
+
+Especially inside test classes, the code is not properly organized, presenting multiple problems such as duplicated code, misuse of Java naming conventions and name shadowing. As test classes are not part of the final library, these issues will not be addressed in the refactoring process.
+
+On the other hand, the main codebase presents problems that must be addressed. The following list summarizes the main issues found in the project:
+
+\begin{itemize}
+	\item Class/interface naming issues: there are classes which do not follow neither the Java naming conventions nor the project naming conventions. For example: \texttt{TheBrig}/\texttt{ITheBrig}, \texttt{SetrfSws}, \texttt{MyThread}.
+	\item Reuse of fixed values: there are fixed values used in multiple classes, which should be extracted into constants. For example, inside the \texttt{TheRegister} class,
+	\item Even if there is a \texttt{Logger} class, there are many \texttt{System.err.println} statements in the codebase, which should be replaced by proper logging.
+\end{itemize}
+
+
+
+\subsubsection{Class-specific issues and Possible Design Patterns usage}
+
+\paragraph*{\texttt{Response} class} Inside the \textit{com.renomad.minum.web.Response} class there are different methods to build different kinds of response. This could be a good candiate in order to use the \textit{Factory Method} along with the \textit{Chain of Responsability} pattern, in order to streamline the response building process and make it more modular.
+
+\paragraph*{\texttt{WebFramework} class} The \texttt{com.renomad.minum.web.WebFramework} class is the main entry point of the library, and is responsible for handling the HTTP requests and responses after the socket connection. This class is too large (around 845 LOC), and contains many methods that are not directly related to the main responsability of the class.
 

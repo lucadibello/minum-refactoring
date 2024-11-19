@@ -14,8 +14,8 @@ As cited before, in order to accomplish the personal objective set at the beginn
 
 \begin{itemize}
 	\item \href{https://github.com/flanglet/kanzi}{fanglet/kanzi}: Kanzi is a modern, modular and efficiend lossless data compressor implemented entirely in java. It uses state-of-the art entropy coders and multi-threading in order to efficiently utilize multi-core CPUs. The design of the library is modular, allowing to select at runtime the best entropy coder for the data to compress. The project has 109 stars, 18 forks, no open issues, and approximately 20,000 LOC. Kanzi was initially selected for this assignment, but later discarded due to its size.
-	\item \href{https://github.com/byronka/minum}{byronka/minium}: Minium is a minimalistic web framework written in Java, built from scratch using few dependencies. The project provides essential components for web application development, including a web server and an in-memory database with disk persistence. This project was particularly interesting as it emphasizes simplicity and minimalism, which is a good starting point for refactoring as most of the code is written from scratch without complex dependencies. Minium has 611 stars, 38 forks, no open issues, and approximately 9'000 LOC (excluding tests). Due to its size, and lack of open issues, Minium was discarded as a candidate for this assignment.
-	\item \href{https://github.com/jinput/jinput}{jinput/jinput}: JInput is a Java library designed for accessing input devices such as game controllers, joysticks, and other peripherals. It provides a platform-independent API to facilitate the integration of various input devices into Java applications. The project has 150 stars, 79 forks, 29 open issues, and 10,000 lines of code (considering only core functionality, excluding tests). JInput was selected for this assignment, as it has a reasonable size, a good number of open issues and a high number of forks, indicating an active community.
+	\item \href{https://github.com/jinput/jinput}{jinput/jinput}: JInput is a Java library designed for accessing input devices such as game controllers, joysticks, and other peripherals. It provides a platform-independent API to facilitate the integration of various input devices into Java applications. The project has 150 stars, 79 forks, 29 open issues, and 10,000 lines of code (considering only core functionality, excluding tests). JInput was initially selected for this assignment, but unfortunately, after inspecting the codebase it was discarded as the project presented too many platform-specific implementations spanning multiple modules and a complete lack of documentation and tests. This would make the refactoring process too complex and time-consuming.
+	\item \href{https://github.com/byronka/minum}{byronka/minium}: Minium is a minimalistic web framework written in Java, built from scratch using few dependencies. The project provides essential components for web application development, including a web server and an in-memory database with disk persistence. This project was particularly interesting as it emphasizes simplicity and minimalism, which is a good starting point for refactoring as most of the code is written from scratch without complex dependencies. Minium has 611 stars, 38 forks, no open issues, and approximately 9'000 LOC (excluding tests). After a thorough analysis, this project was selected for refactoring as it presents a clear and concise codebase divided into several packages, which will allow for a more focused refactor. Furthermore, it presents a complete JavaDoc documentation, which will be useful to understand the project's design.
 \end{itemize}
 
 \noindent \textit{Note}: The data presented above was collected on the \displaydate{collectiondate}, and may have changed since then. Check the project's repository for the most recent information.
@@ -23,11 +23,30 @@ As cited before, in order to accomplish the personal objective set at the beginn
 \subsection{High-level overview of the project structure}
 \label{sec:project_structure}
 
-The JInput library is structured into several modular components, designed to provide platform-independent access to input devices in Java applications. Its architecture emphasizes flexibility and extensibility, catering to various operating systems and device types.
+The project presents a single \textit{Maven} module which contains the core functionality of the framework. The module contains 10 packages, each with a specific purpose. The following list provides a high-level overview of the purpose of each package:
 
-The \texttt{CoreAPI} module serves as the foundation of the library, defining the key abstractions for controllers, components, and events. This module establishes a unified API for interacting with input devices, making it the central piece of the framework. By providing consistent interfaces, the \texttt{CoreAPI} ensures seamless integration with platform-specific components while abstracting the complexities of device communication. This module presents a monolithic design, with several classes and interfaces presented in a single package.
+\vspace{1em}
+\noindent
+\begin{minipage}{0.5\textwidth}
+	\begin{itemize}
+		\item \texttt{database}: In-memory database with disk persistence.
+		\item \texttt{htmlparsing}: HTML parsing utilities.
+		\item \texttt{logging}: Logging utilities.
+		\item \texttt{queue}: Queue of tasks to be executed asynchronously.
+		\item \texttt{security}: \href{https://github.com/fail2ban/fail2ban}{Fail2Ban}-like security mechanism and threat detection via log analysis.
+	\end{itemize}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+	\begin{itemize}
+		\item \texttt{state}: Singleton context to store global state.
+		\item \texttt{templating}: Template engine to inject dynamic content into HTML pages.
+		\item \texttt{testing}: Minimalistic testing framework for unit and integration tests.
+		\item \texttt{utils}: General utilities.
+		\item \texttt{web}: Web server and request handling.
+	\end{itemize}
+\end{minipage}
 
-Given its central role in the library, only this module was selected for refactoring, as it would have the most significant impact on the overall design of the project.
+\noindent From a first glance, the project seems well-structured, with clear separation of concerns between packages. The codebase is well-documented, with JavaDoc comments present in most classes and methods, providing a good starting point to understand the project's design. In \autoref{sec:project_health_analysis}, the project design will be analyzed in more detail, focusing on the use of design patterns and potential code smells.
 
 \subsection{Additional tools and resources}
 
@@ -37,16 +56,18 @@ The results of both tools provide valuable information to guide the refactor, hi
 
 \subsection{Building the project}
 
-The \emph{jinput} project uses Maven as the build system, and, as the analysis of the project design will target only the \emph{Core API} module, the build process must be focused on this module only. To do so, the following command can be used to build the project:
+The \emph{minum} project uses Maven as the build system, and.
+
+To simplify the configuration process, the creator of the library created a Maven Wrapper script (named \texttt{mvnw}) which is a self-container script that allows to automatically download the necessary Maven version to build the project, ensuring that the build process is reproducible across different environments. This script is located in the root of the project, and can be used to build the project by running the following command:
 
 \begin{center}
 	\begin{minipage}{0.5\textwidth}
-		\begin{lstlisting}[language=bash, caption={Building the project using Maven}]
-    mvn clean install -pl core-api
+		\begin{lstlisting}[language=bash, caption={Building the project using Maven Wrapper script}]
+    ./mvnw clean install
   \end{lstlisting}
 	\end{minipage}
 \end{center}
 
-\noindent The \texttt{-pl} flag allows to specify the module to build, in this case, the \emph{Core API} module. Furthermore, the \texttt{clean} and \texttt{install} goals are used to ensure a clean build, and to install the artifacts in the local Maven repository, respectively.
+\textit{Note}: If the current environment already has Maven installed, the project can be built using the \texttt{mvn} command instead of the wrapper script.
 
-The build artifacts can be found in the \texttt{target} directory of the \emph{Core API} module. The bytecode generated by the build process will be used by the \textit{Pattern4j} tool to analyze the project's design.
+\noindent The build artifacts can be found in the \texttt{target} directory. The bytecode generated by the build process will be used by the \textit{Pattern4j} tool to analyze the project's design.
