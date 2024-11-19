@@ -2,7 +2,9 @@ The project will be analyzed using both \href{https://www.sonarsource.com/}{Sona
 
 As the configuration and usage of both tools is out of the scope of this report, the following sections will focus on the results of the analysis, providing insights into the current state of the project, and guiding the refactoring process. Refer to the respective documentation for more information on how to configure and use both tools.
 
-\subsection{SonarQube analysis}
+\subsection{Static Analysis Tools}
+
+\subsubsection{SonarQube analysis}
 
 After running the SonarQube analysis on the entire Minium codebase (including tests in order to get the test coverage metric), were detected a total of 588 code smells, 26 security hotspots and 34 possible bugs. In the following paragraphs the results will be briefly analyzed in order to plan the refactoring process.
 
@@ -44,7 +46,7 @@ The log injection issue on the other hand is related to the use of the \texttt{L
 
 Both security hostspots will be addressed in the refactoring process in order to enhance the security of the project.
 
-\subsection{Pattern4j analysis}
+\subsubsection{Pattern4j analysis}
 
 Unfortunately, the pattern4j tool was not able to analyze the entire project codebase due to the use of Java 21 features in the project. By running the tool using the custom \texttt{run-pattern4j-headless.sh} script, the following error was raised:
 
@@ -53,6 +55,19 @@ Exception in thread "main" java.lang.IllegalArgumentException: Unsupported class
 \end{verbatim}
 
 \noindent For this reason, the design pattern usage anaylsis will be skipped. Fortunately, this step is not crucial for the refactoring of the project as it would have only provided additional insights into the design of the project rather than pinpointing specific issues.
+
+\subsubsection{Large class detection}
+
+In order to detect large classes, a custom bash script was developed to count the number of lines of code of each class in the project. The script uses the \texttt{cloc} tool to count the number of lines of code of each file in the project, and then orders the results by the number of lines of code in order to detect the largest classes. The following are the top 4 largest classes in the project (excluding test classes and comments):
+
+\begin{enumerate}
+	\item \texttt{com.renomad.minum.web.WebFramework} - 415 LOC
+	\item \texttt{com.renomad.minum.htmlparsing.HtmlParser} - 372 LOC
+	\item \texttt{com.renomad.minum.database.} - 219 LOC
+	\item \texttt{com.renomad.minum.web.Response} - 214 LOC
+\end{enumerate}
+
+\noindent The average number of lines of code is 55 LOC (5), which is considered acceptable. However, the top 4 largest classes should be refactored as they are too large.
 
 \subsection{Main Issues and Refactoring Plan}
 
@@ -80,8 +95,6 @@ On the other hand, the main codebase presents problems that must be addressed. T
 	\item Reuse of fixed values: there are fixed values used in multiple classes, which should be extracted into constants. For example, inside the \texttt{TheRegister} class,
 	\item Even if there is a \texttt{Logger} class, there are many \texttt{System.err.println} statements in the codebase, which should be replaced by proper logging.
 \end{itemize}
-
-
 
 \subsubsection{Class-specific issues and Possible Design Patterns usage}
 

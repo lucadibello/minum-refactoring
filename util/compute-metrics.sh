@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Description:
-# This script counts the number of lines of Java code for each .java file
+# This script uses 'cloc' to count the number of lines of Java code for each .java file
 # in a specified directory and all its subdirectories (recursive search).
 # It then outputs:
 #   - A list of these files ordered from the longest to the shortest
@@ -36,6 +36,12 @@ if [ ! -d "$target_dir" ]; then
   exit 1
 fi
 
+# Check if 'cloc' is installed
+if ! command -v cloc >/dev/null 2>&1; then
+  echo "Error: 'cloc' is not installed. Please install it and try again."
+  exit 1
+fi
+
 # Initialize total lines and file count
 total=0
 count=0
@@ -49,32 +55,49 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Find all .java files in the target directory and subdirectories
-# Using find with -type f to ensure regular files
-# Using -print0 to handle filenames with spaces or special characters
-find "$target_dir" -type f -name "*.java" -print0 | while IFS= read -r -d '' file; do
-  # Get the line count using wc, stripping leading/trailing whitespace
-  lines=$(wc -l <"$file" | tr -d '[:space:]')
+# Use 'cloc' to get the line counts per file
+# --quiet suppresses non-essential output
+# --csv ensures output is in CSV format
+# --include-lang=Java filters for Java files only
+cloc_output=$(cloc --by-file --include-lang=Java --csv "$target_dir" 2>/dev/null)
+
+# Process 'cloc' output
+# The CSV output has fields: language,filename,blank,comment,code
+# We will extract filename and code lines
+
+# Skip the header line and process each Java file
+total=0
+echo "$cloc_output" | tail -n +2 | while IFS=',' read -r language filename blank comment code; do
+  # Remove quotes from filename if any
+  filename=${filename//\"/}
+
+  # if filename is "package-info.java", skip it
+  # as it is not a regular Java source file
+  if [[ "$filename" == *"/package-info.java" ]]; then
+    continue
+  fi
+
+  # Remove leading/trailing whitespace from code
+  code=$(echo "$code" | xargs)
+
+  # Ensure that code is a number
+  if ! [[ "$code" =~ ^[0-9]+$ ]]; then
+    continue
+  fi
 
   # Add to total lines
-  total=$((total + lines))
+  total=$((total + code))
+  echo "$total"
 
   # Increment file count
   count=$((count + 1))
+  echo "$count"
 
-  # Save the line count and relative filename to the temporary file
-  # Using realpath --relative-to to get the relative path from target_dir
-  relative_path=$(realpath --relative-to="$target_dir" "$file")
-  echo "$lines $relative_path" >>"$temp_file"
+  # Save the code line count and filename to the temporary file
+  echo "$code $filename" >>"$temp_file"
 done
 
-# Check if any .java files were found
-if [ $count -eq 0 ]; then
-  echo "No Java files found in directory '$target_dir' and its subdirectories."
-  exit 0
-fi
-
-# Sort the temporary file in descending order based on line count
+# Sort the temporary file in descending order based on code line count
 sorted=$(sort -nr "$temp_file")
 
 # Output the sorted list
@@ -91,9 +114,14 @@ echo "-----------------------------------------------------------------------"
 echo "Total lines of code: $total"
 
 # Calculate and output average lines of code per file
-if [ $count -gt 0 ]; then
-  # Calculate average with decimal precision using bc
-  average=$(echo "scale=2; $total / $count" | bc)
+if [ "$count" -gt 0 ]; then
+  # Calculate average with decimal precision using bc or awk
+  if command -v bc >/dev/null 2>&1; then
+    average=$(echo "scale=2; $total / $count" | bc)
+  else
+    # If bc is not available, use awk as an alternative
+    average=$(awk "BEGIN {printf \"%.2f\", $total/$count}")
+  fi
   echo "Average lines of code per file: $average"
 else
   echo "Average lines of code per file: N/A (no files)"
