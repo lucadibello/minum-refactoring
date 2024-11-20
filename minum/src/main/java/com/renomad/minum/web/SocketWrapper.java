@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ final class SocketWrapper implements ISocketWrapper {
     private final String hostName;
     private final InputStream inputStream;
     private final OutputStream writer;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final IServer server;
 
     /**
@@ -27,7 +27,7 @@ final class SocketWrapper implements ISocketWrapper {
      * @param logger not much more to say on this param
      * @param timeoutMillis we'll configure the socket to timeout after this many milliseconds.
      */
-    SocketWrapper(Socket socket, IServer server, ILogger logger, int timeoutMillis, String hostName) throws IOException {
+    SocketWrapper(Socket socket, IServer server, CanonicalLogger logger, int timeoutMillis, String hostName) throws IOException {
         this.socket = socket;
         this.hostName = hostName;
         logger.logTrace(() -> String.format("Setting timeout of %d milliseconds on socket %s", timeoutMillis, socket));

@@ -2,8 +2,7 @@ package com.renomad.minum.web;
 
 import com.renomad.minum.queue.ActionQueueKiller;
 import com.renomad.minum.state.Constants;
-import com.renomad.minum.logging.ILogger;
-import com.renomad.minum.logging.Logger;
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.TheBrig;
 import com.renomad.minum.state.Context;
@@ -26,7 +25,7 @@ import java.util.concurrent.Executors;
  */
 public final class FullSystem {
 
-    final ILogger logger;
+    final CanonicalLogger logger;
     private final Constants constants;
     private final FileUtils fileUtils;
     private IServer server;
@@ -69,7 +68,7 @@ public final class FullSystem {
     public static Context buildContext() {
         var constants = new Constants();
         var executorService = Executors.newVirtualThreadPerTaskExecutor();
-        var logger = new Logger(constants, executorService, "primary logger");
+        var logger = new CanonicalLogger(constants.logLevels, executorService, "primary logger");
 
         var context = new Context(executorService, constants);
         context.setLogger(logger);
@@ -201,7 +200,7 @@ public final class FullSystem {
      * The core code for closing resources
      * @param fullSystemName the name of this FullSystem, in cases where several are running concurrently
      */
-    static void closeCore(ILogger logger, Context context, IServer server, IServer sslServer, String fullSystemName) {
+    static void closeCore(CanonicalLogger logger, Context context, IServer server, IServer sslServer, String fullSystemName) {
         try {
             logger.logDebug(() -> "Received shutdown command");
             logger.logDebug(() -> " Stopping the server: " + server);

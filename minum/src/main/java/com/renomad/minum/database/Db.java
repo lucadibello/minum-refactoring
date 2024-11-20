@@ -1,8 +1,8 @@
 package com.renomad.minum.database;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.ILogger;
-import com.renomad.minum.queue.AbstractActionQueue;
+import com.renomad.minum.queue.model.IActionQueue;
 import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.utils.FileUtils;
 
@@ -57,8 +57,8 @@ public final class Db<T extends DbData<?>> {
     final AtomicLong index;
 
     private final Path dbDirectory;
-    private final AbstractActionQueue actionQueue;
-    private final ILogger logger;
+    private final IActionQueue actionQueue;
+    private final CanonicalLogger logger;
     private final Map<Long, T> data;
     private final FileUtils fileUtils;
     private boolean hasLoadedData;

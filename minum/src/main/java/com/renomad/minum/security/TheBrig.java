@@ -1,9 +1,9 @@
 package com.renomad.minum.security;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.database.Db;
-import com.renomad.minum.logging.ILogger;
 import com.renomad.minum.utils.SearchUtils;
 import com.renomad.minum.utils.ThrowingRunnable;
 import com.renomad.minum.utils.TimeUtils;
@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public final class TheBrig implements ITheBrig {
     private final ExecutorService es;
     private final Db<Inmate> inmatesDb;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final Constants constants;
     private final ReentrantLock lock = new ReentrantLock();
     private Thread myThread;
@@ -92,7 +92,7 @@ public final class TheBrig implements ITheBrig {
      * @param now the current time, in milliseconds past the epoch
      * @param inmatesDb the database of all inmates
      */
-    static void processInmateList(long now, Collection<Inmate> inmates, ILogger logger, Db<Inmate> inmatesDb) {
+    static void processInmateList(long now, Collection<Inmate> inmates, CanonicalLogger logger, Db<Inmate> inmatesDb) {
         List<String> keysToRemove = new ArrayList<>();
         for (Inmate clientKeyAndDuration : inmates) {
             reviewForParole(now, keysToRemove, clientKeyAndDuration, logger);
@@ -108,7 +108,7 @@ public final class TheBrig implements ITheBrig {
             long now,
             List<String> keysToRemove,
             Inmate inmate,
-            ILogger logger) {
+            CanonicalLogger logger) {
         // if the release time is in the past (that is, the release time is
         // before / less-than now), add them to the list to be released.
         if (inmate.getReleaseTime() < now) {

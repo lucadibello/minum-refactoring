@@ -1,4 +1,4 @@
-package com.renomad.minum.logging;
+package com.renomad.minum.logging.model;
 
 /**
  * An enumeration of the levels of logging our system provides.

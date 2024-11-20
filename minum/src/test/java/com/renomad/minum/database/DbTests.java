@@ -2,7 +2,7 @@ package com.renomad.minum.database;
 
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.Logger;
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.testing.RegexUtils;
 import com.renomad.minum.testing.StopwatchUtils;
@@ -898,7 +898,7 @@ public class DbTests {
     private Context buildTestingContextWithRegularLogger(String loggerName) {
         var constants = new Constants();
         var executorService = Executors.newVirtualThreadPerTaskExecutor();
-        var logger = new Logger(constants, executorService, loggerName);
+        var logger = new CanonicalLogger(constants.logLevels, executorService, loggerName);
 
         var context = new Context(executorService, constants);
         context.setLogger(logger);

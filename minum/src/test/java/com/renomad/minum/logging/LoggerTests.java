@@ -1,12 +1,14 @@
 package com.renomad.minum.logging;
 
+import com.renomad.minum.logging.model.LoggingLevel;
+import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
+import com.renomad.minum.utils.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
 import java.util.Properties;
 
 import static com.renomad.minum.testing.TestFramework.*;
@@ -26,30 +28,9 @@ public class LoggerTests {
         shutdownTestingContext(context);
     }
 
-    /**
-     * This does print to output, but skips normal channels - just
-     * uses a System.out.printf at the end.  We can't track it.
-     */
-    @Test
-    public void testLogHelper() {
-        Logger.logHelper(() -> "testing...", LoggingLevel.AUDIT, Map.of(LoggingLevel.AUDIT, true), null);
-        var ex = assertThrows(TestLoggerException.class, () -> logger.findFirstMessageThatContains("testing..."));
-        assertTrue(ex.getMessage().contains("testing... was not found in"));
-    }
 
     /**
-     * In LogHelper, if we provide a map of logging levels that causes a message
-     * not to be printed, then ... it does not print at all.
-     */
-    @Test
-    public void testLogHelper_LoggingDisabled() {
-        Logger.logHelper(() -> "testing...", LoggingLevel.AUDIT, Map.of(LoggingLevel.AUDIT, false), null);
-        var ex = assertThrows(TestLoggerException.class, () -> logger.findFirstMessageThatContains("testing..."));
-        assertTrue(ex.getMessage().contains("testing... was not found in"));
-    }
-
-    /**
-     * The {@link LoggingActionQueue} is what enables the log to send its
+     * The {@link ActionQueue} is what enables the log to send its
      * messages for later output.  It's critical.  But, there are situations
      * where the queue would not be available - primarily, 1) when the system
      * has just started up, and 2) When it's shutting down.  During those phases,
@@ -58,12 +39,14 @@ public class LoggerTests {
      * This tests where the LoggingActionQueue is stopped
      */
     @Test
-    public void testLogHelper_EdgeCase_LoggingActionQueueStopping() {
+    public void testLogger_EdgeCase_LoggingActionQueueStopping() {
         Properties props = new Properties();
         var constants = new Constants(props);
-        var testQueue = new LoggingActionQueue("test queue", null, constants);
+        var testQueue = new ActionQueue("test queue", context, constants.logLevels);
+        var local = new CanonicalLogger(constants.logLevels, null, "test logger", testQueue);
         testQueue.stop(0,0);
-        Logger.logHelper(() -> "testing...", LoggingLevel.AUDIT, Map.of(LoggingLevel.AUDIT, true), testQueue);
+        local.log(() -> "testing...", LoggingLevel.AUDIT);
+
         var ex = assertThrows(TestLoggerException.class, () -> logger.findFirstMessageThatContains("testing..."));
         assertTrue(ex.getMessage().contains("testing... was not found in"));
     }
@@ -75,10 +58,10 @@ public class LoggerTests {
      */
     @Test
     public void testShowWhiteSpace() {
-        assertEquals(Logger.showWhiteSpace(" "), "(BLANK)");
-        assertEquals(Logger.showWhiteSpace(""), "(EMPTY)");
-        assertEquals(Logger.showWhiteSpace(null), "(NULL)");
-        assertEquals(Logger.showWhiteSpace("\t\r\n"), "\\t\\r\\n");
+        assertEquals(StringUtils.showWhiteSpace(" "), "(BLANK)");
+        assertEquals(StringUtils.showWhiteSpace(""), "(EMPTY)");
+        assertEquals(StringUtils.showWhiteSpace(null), "(NULL)");
+        assertEquals(StringUtils.showWhiteSpace("\t\r\n"), "\\t\\r\\n");
     }
 
     /**
@@ -88,9 +71,11 @@ public class LoggerTests {
     @Test
     public void testEnableAndDisableTrace() {
         logger.logTrace(() -> "You can't see me!");
-        logger.getActiveLogLevels().put(LoggingLevel.TRACE, true);
+        boolean status = logger.enableLogLevel(LoggingLevel.TRACE);
+        assertTrue(status);
         logger.logTrace(() -> "But you can see this.");
-        logger.getActiveLogLevels().put(LoggingLevel.TRACE, false);
+        status = logger.disableLogLevel(LoggingLevel.TRACE);
+        assertTrue(status);
         logger.logTrace(() -> "You can't see me!");
     }
 
@@ -100,7 +85,7 @@ public class LoggerTests {
      */
     @Test
     public void testUsingDescendantLogger() {
-        DescendantLogger descendantLogger = new DescendantLogger((Logger)context.getLogger());
+        DescendantLogger descendantLogger = new DescendantLogger(context.getLogger());
         descendantLogger.logRequests(() -> "Incoming request from 123.123.123.123: foo foo");
         assertTrue((descendantLogger).doesMessageExist("Incoming request from 123.123.123.123: foo foo"));
     }

@@ -6,7 +6,6 @@ import com.renomad.minum.state.Context;
 import com.renomad.minum.sampledomain.auth.AuthResult;
 import com.renomad.minum.sampledomain.auth.AuthUtils;
 import com.renomad.minum.database.Db;
-import com.renomad.minum.logging.ILogger;
 import com.renomad.minum.sampledomain.photo.Photograph;
 import com.renomad.minum.utils.FileUtils;
 import com.renomad.minum.utils.StacktraceUtils;
@@ -38,7 +37,7 @@ public class UploadPhoto {
     private final String uploadVideoTemplateHtml;
     private final Db<Photograph> db;
     private final Db<Video> videoDb;
-    private final ILogger logger;
+    private final ICanonicalLogger logger;
     private final Path dbDir;
     private final AuthUtils auth;
 

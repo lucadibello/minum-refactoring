@@ -2,7 +2,8 @@ package com.renomad.minum.state;
 
 import com.renomad.minum.database.Db;
 import com.renomad.minum.database.DbData;
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.logging.model.ILogger;
 import com.renomad.minum.queue.ActionQueueState;
 import com.renomad.minum.web.FullSystem;
 
@@ -30,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 public final class Context {
 
     public static final Context EMPTY = new Context(null, null);
-    private ILogger logger;
+    private CanonicalLogger logger;
     private final ExecutorService executorService;
     private final Constants constants;
     private FullSystem fullSystem;
@@ -42,11 +43,11 @@ public final class Context {
         actionQueueState = new ActionQueueState();
     }
 
-    public void setLogger(ILogger logger) {
+    public void setLogger(CanonicalLogger logger) {
         this.logger = logger;
     }
 
-    public ILogger getLogger() {
+    public CanonicalLogger getLogger() {
         return logger;
     }
 

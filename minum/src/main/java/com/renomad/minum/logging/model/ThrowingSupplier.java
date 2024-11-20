@@ -1,7 +1,7 @@
-package com.renomad.minum.logging;
+package com.renomad.minum.logging.model;
 
 /**
- * a functional interface used in {@link ILogger}, allows exceptions
+ * a functional interface used in {@link ICanonicalLogger}, allows exceptions
  * to bubble up.
  */
 @FunctionalInterface

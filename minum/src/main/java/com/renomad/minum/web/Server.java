@@ -1,7 +1,7 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Constants;
-import com.renomad.minum.logging.ILogger;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.ConcurrentSet;
@@ -29,7 +29,7 @@ final class Server implements IServer {
     private final SetOfSws setOfSWs;
     private final ExecutorService es;
     private final HttpServerType serverType;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final String serverName;
     private final ITheBrig theBrig;
     private final Constants constants;
@@ -91,7 +91,7 @@ final class Server implements IServer {
         };
     }
 
-    static void handleServerException(IOException ex, ILogger logger) {
+    static void handleServerException(IOException ex, CanonicalLogger logger) {
         if (!(ex.getMessage().contains("Socket closed") || ex.getMessage().contains("Socket is closed"))) {
             logger.logAsyncError(() -> StacktraceUtils.stackTraceToString(ex));
         }

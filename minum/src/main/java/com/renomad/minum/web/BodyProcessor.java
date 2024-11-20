@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.security.ForbiddenUseException;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 final class BodyProcessor implements IBodyProcessor {
 
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final IInputStreamUtils inputStreamUtils;
     private final Constants constants;
 

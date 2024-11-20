@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.utils.ConcurrentSet;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 record SetOfSws(
         ConcurrentSet<ISocketWrapper> socketWrappers,
-        ILogger logger,
+        CanonicalLogger logger,
         String nameOfSet) {
 
     void add(ISocketWrapper sw) {

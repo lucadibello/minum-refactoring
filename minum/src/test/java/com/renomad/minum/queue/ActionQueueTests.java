@@ -1,4 +1,4 @@
-package com.renomad.minum.logging;
+package com.renomad.minum.queue;
 
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.MyThread;
@@ -15,7 +15,7 @@ import static com.renomad.minum.testing.TestFramework.*;
  * system.  It's particularly difficult to test because the normal
  * facilities for testing are unavailable.
  */
-public class LoggingActionQueueTests {
+public class ActionQueueTests {
 
     private Context context;
 
@@ -31,7 +31,7 @@ public class LoggingActionQueueTests {
 
     @Test
     public void testGetQueueThread() {
-        var testQueue = new LoggingActionQueue("my test queue", context.getExecutorService(), context.getConstants());
+        var testQueue = new ActionQueue("my test queue", context);
         testQueue.initialize();
         MyThread.sleep(10);
         assertEquals(testQueue.getQueueThread().getName(), "my test queue");
@@ -39,20 +39,13 @@ public class LoggingActionQueueTests {
 
     @Test
     public void testGetQueue() {
-        var testQueue = new LoggingActionQueue("my test queue", context.getExecutorService(), context.getConstants());
+        var testQueue = new ActionQueue("my test queue", context);
         testQueue.initialize();
         testQueue.enqueue("Printing a test comment", () -> {MyThread.sleep(20);System.out.println("This is a test");});
         testQueue.enqueue("Printing a test comment", () -> {MyThread.sleep(20);System.out.println("This is a test");});
 
-        assertEquals(testQueue.getQueue().peek().toString(), "Printing a test comment");
+        assertTrue(testQueue.getQueue().peek() != null);
+        assertEquals(testQueue.getQueue().peek().toString(),
+                "Printing a test comment");
     }
-
-    @Test
-    public void testErrorWhileRunningAction() {
-        assertThrows(UtilsException.class, "java.lang.RuntimeException: This is a test exception", () -> LoggingActionQueue.runAction(
-                new RunnableWithDescription(() -> {
-                    throw new RuntimeException("This is a test exception");
-                }, "Testing runAction")));
-    }
-
 }

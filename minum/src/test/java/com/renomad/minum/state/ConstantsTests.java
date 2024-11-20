@@ -1,6 +1,6 @@
 package com.renomad.minum.state;
 
-import com.renomad.minum.logging.LoggingLevel;
+import com.renomad.minum.logging.model.LoggingLevel;
 import org.junit.Test;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.renomad.minum.utils;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 
 /**
  * This exists so that we are able to slightly better manage
@@ -21,7 +21,7 @@ public interface ThrowingRunnable {
      */
     void run() throws Exception;
 
-    static Runnable throwingRunnableWrapper(ThrowingRunnable throwingRunnable, ILogger logger) {
+    static Runnable throwingRunnableWrapper(ThrowingRunnable throwingRunnable, CanonicalLogger logger) {
         return () -> {
             try {
                 throwingRunnable.run();

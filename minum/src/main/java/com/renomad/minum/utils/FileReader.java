@@ -1,6 +1,6 @@
 package com.renomad.minum.utils;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,9 +20,9 @@ public final class FileReader implements IFileReader {
 
     private final Map<String, byte[]> lruCache;
     private final boolean useCacheForStaticFiles;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
 
-    public FileReader(Map<String, byte[]> lruCache, boolean useCacheForStaticFiles, ILogger logger) {
+    public FileReader(Map<String, byte[]> lruCache, boolean useCacheForStaticFiles, CanonicalLogger logger) {
         this.lruCache = lruCache;
         this.useCacheForStaticFiles = useCacheForStaticFiles;
         this.logger = logger;
@@ -47,7 +47,7 @@ public final class FileReader implements IFileReader {
         return readTheFile(path, logger, useCacheForStaticFiles, lruCache);
     }
 
-    static byte[] readTheFile(String path, ILogger logger, boolean useCacheForStaticFiles, Map<String, byte[]> lruCache) throws IOException {
+    static byte[] readTheFile(String path, CanonicalLogger logger, boolean useCacheForStaticFiles, Map<String, byte[]> lruCache) throws IOException {
         try (RandomAccessFile reader = new RandomAccessFile(path, "r");
              ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             FileChannel channel = reader.getChannel();

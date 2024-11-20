@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.security.ForbiddenUseException;
 import com.renomad.minum.utils.StringUtils;
 
@@ -21,7 +21,7 @@ public final class RequestLine {
     private final PathDetails pathDetails;
     private final HttpVersion version;
     private final String rawValue;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     static final int MAX_QUERY_STRING_KEYS_COUNT = 50;
 
     /**
@@ -35,7 +35,7 @@ public final class RequestLine {
             PathDetails pathDetails,
             HttpVersion version,
             String rawValue,
-            ILogger logger
+            CanonicalLogger logger
     ) {
         this.method = method;
         this.pathDetails = pathDetails;

@@ -1,7 +1,6 @@
 package com.renomad.minum;
 
 import com.renomad.minum.database.Db;
-import com.renomad.minum.logging.ILogger;
 import com.renomad.minum.sampledomain.ListPhotos;
 import com.renomad.minum.sampledomain.PersonName;
 import com.renomad.minum.sampledomain.SampleDomain;
@@ -33,7 +32,7 @@ public class TheRegister {
 
     private final Context context;
     private final WebFramework webFramework;
-    private final ILogger logger;
+    private final ICanonicalLogger logger;
     private final FileUtils fileUtils;
 
     public TheRegister(Context context, WebFramework wf) {

@@ -1,8 +1,10 @@
 package com.renomad.minum.logging;
 
-import com.renomad.minum.state.Constants;
+import com.renomad.minum.logging.model.LoggingLevel;
+import com.renomad.minum.logging.model.ThrowingSupplier;
 import com.renomad.minum.utils.MyThread;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
@@ -10,10 +12,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * This implementation of {@link Logger} has a few
+ * This implementation of {@link CanonicalLogger} has a few
  * extra functions that only apply to tests, like {@link #test(String)}
  */
-public final class TestLogger extends Logger {
+public final class TestLogger extends CanonicalLogger {
 
     private final Queue<String> recentLogLines;
     public static final int MAX_CACHE_SIZE = 30;
@@ -23,8 +25,8 @@ public final class TestLogger extends Logger {
     /**
      * See {@link TestLogger}
      */
-    public TestLogger(Constants constants, ExecutorService executorService, String name) {
-        super(constants, executorService, name);
+    public TestLogger(Collection<LoggingLevel> logLevels, ExecutorService executorService, String name) {
+        super(logLevels, executorService, name);
         this.recentLogLines = new TestLoggerQueue(MAX_CACHE_SIZE);
         this.loggingLock = new ReentrantLock();
     }
@@ -151,7 +153,7 @@ public final class TestLogger extends Logger {
      * Whether the given string exists in the log messages. May
      * exist multiple times.
      * @param value a string to search in the log
-     * @return whether or not this string was found, even if there
+     * @return whether this string was found, even if there
      * were multiple places it was found.
      */
     public boolean doesMessageExist(String value) {
@@ -202,7 +204,7 @@ public final class TestLogger extends Logger {
             final var baseLength = 11;
             final var dashes = "-".repeat(msg.length() + baseLength);
 
-            loggingActionQueue.enqueue("Testlogger#test("+msg+")", () -> {
+            getLoggingActionQueue().enqueue("Testlogger#test("+msg+")", () -> {
                 testCount += 1;
                 System.out.printf("%n+%s+%n| TEST %d: %s |%n+%s+%n%n", dashes, testCount, msg, dashes);
                 recentLogLines.add(msg);
@@ -218,7 +220,7 @@ public final class TestLogger extends Logger {
 
     @Override
     public String toString() {
-        return "TestLogger using queue: " + super.loggingActionQueue.toString();
+        return "TestLogger using queue: " + getLoggingActionQueue().toString();
     }
 
 }

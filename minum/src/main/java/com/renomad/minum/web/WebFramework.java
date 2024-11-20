@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.security.ForbiddenUseException;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.UnderInvestigation;
@@ -84,7 +84,7 @@ public final class WebFramework {
     // This is just used for testing.  If it's null, we use the real time.
     private final ZonedDateTime overrideForDateTime;
     private final FullSystem fs;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
 
     /**
      * This is the minimum number of bytes in a text response to apply gzip.
@@ -175,7 +175,7 @@ public final class WebFramework {
     }
 
 
-    static void handleIOException(ISocketWrapper sw, IOException ex, ILogger logger, ITheBrig theBrig, UnderInvestigation underInvestigation, int vulnSeekingJailDuration ) {
+    static void handleIOException(ISocketWrapper sw, IOException ex, CanonicalLogger logger, ITheBrig theBrig, UnderInvestigation underInvestigation, int vulnSeekingJailDuration ) {
         logger.logDebug(() -> ex.getMessage() + " (at Server.start)");
         String suspiciousClues = underInvestigation.isClientLookingForVulnerabilities(ex.getMessage());
 
@@ -185,7 +185,7 @@ public final class WebFramework {
         }
     }
 
-    static void handleForbiddenUse(ISocketWrapper sw, ForbiddenUseException ex, ILogger logger, ITheBrig theBrig, int vulnSeekingJailDuration) {
+    static void handleForbiddenUse(ISocketWrapper sw, ForbiddenUseException ex, CanonicalLogger logger, ITheBrig theBrig, int vulnSeekingJailDuration) {
         logger.logDebug(() -> sw.getRemoteAddr() + " is looking for vulnerabilities, for this: " + ex.getMessage());
         if (theBrig != null) {
             theBrig.sendToJail(sw.getRemoteAddr() + "_vuln_seeking", vulnSeekingJailDuration);
@@ -194,7 +194,7 @@ public final class WebFramework {
         }
     }
 
-    static void handleReadTimedOut(ISocketWrapper sw, IOException ex, ILogger logger) {
+    static void handleReadTimedOut(ISocketWrapper sw, IOException ex, CanonicalLogger logger) {
         /*
         if we close the application on the server side, there's a good
         likelihood a SocketException will come bubbling through here.
@@ -275,7 +275,7 @@ public final class WebFramework {
     /**
      * determine if we are in a keep-alive connection
      */
-    static boolean determineIfKeepAlive(RequestLine sl, Headers hi, ILogger logger) {
+    static boolean determineIfKeepAlive(RequestLine sl, Headers hi, CanonicalLogger logger) {
         boolean isKeepAlive = false;
         if (sl.getVersion() == HttpVersion.ONE_DOT_ZERO) {
             isKeepAlive = hi.hasKeepAlive();
