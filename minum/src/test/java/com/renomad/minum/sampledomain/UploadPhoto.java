@@ -1,5 +1,6 @@
 package com.renomad.minum.sampledomain;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.sampledomain.photo.Video;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
@@ -37,7 +38,7 @@ public class UploadPhoto {
     private final String uploadVideoTemplateHtml;
     private final Db<Photograph> db;
     private final Db<Video> videoDb;
-    private final ICanonicalLogger logger;
+    private final CanonicalLogger logger;
     private final Path dbDir;
     private final AuthUtils auth;
 

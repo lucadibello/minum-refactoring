@@ -1,5 +1,6 @@
 package com.renomad.minum.sampledomain.auth;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.database.Db;
@@ -29,7 +30,7 @@ import static com.renomad.minum.web.StatusLine.StatusCode.*;
  */
 public class AuthUtils {
 
-    private final ICanonicalLogger logger;
+    private final CanonicalLogger logger;
     private final Db<User> userDiskData;
     private final Db<SessionId> sessionDiskData;
 
