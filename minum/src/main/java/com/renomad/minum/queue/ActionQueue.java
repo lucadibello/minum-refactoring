@@ -27,8 +27,17 @@ public final class ActionQueue extends BaseActionQueue {
      * @param name give this object a unique, explanatory name.
      */
     public ActionQueue(String name, Context context) {
-        super(name, context.getExecutorService());
+        this(name, context.getExecutorService());
         context.getActionQueueState().offerToQueue(this);
+    }
+
+    public ActionQueue(String name, Context context, Collect<LoggingLevel> logLevels) {
+        this(name, context.getExecutorService());
+        context.getActionQueueState().offerToQueue(this);
+    }
+
+    public ActionQueue(String name, ExecutorService executorService) {
+        super(name, executorService);
     }
 
     /**

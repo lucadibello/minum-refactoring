@@ -53,7 +53,7 @@ public class WebTests {
     static private Context context;
     static private TestLogger logger;
     private static String gettysburgAddress;
-    private static Headers defaultHeader = new Headers(List.of());
+    private static final Headers defaultHeader = new Headers(List.of());
 
     /**
      * The length of time, in milliseconds, we will wait for the server to close

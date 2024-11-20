@@ -34,11 +34,11 @@ public final class ActionQueueKiller {
         for (IActionQueue aq = context.getActionQueueState().pollFromQueue(); aq != null ; aq = context.getActionQueueState().pollFromQueue()) {
             IActionQueue finalAq = aq;
             finalAq.stop();
-            logger.logDebug(() -> TimeUtils.getTimestampIsoInstant() + " killing " + ((ActionQueue)finalAq).getQueueThread());
-            if (((ActionQueue)finalAq).getQueueThread() != null) {
+            logger.logDebug(() -> TimeUtils.getTimestampIsoInstant() + " killing " + finalAq.getQueueThread());
+            if (finalAq.getQueueThread() != null) {
                 hadToInterrupt = true;
                 System.out.println("had to interrupt " + finalAq);
-                ((ActionQueue)finalAq).getQueueThread().interrupt();
+                finalAq.getQueueThread().interrupt();
             }
         }
     }
