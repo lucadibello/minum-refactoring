@@ -1,3 +1,0 @@
-How to test one, avoiding network as much as possible
-
-WON'T DO

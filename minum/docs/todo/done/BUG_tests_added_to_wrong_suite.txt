@@ -1,2 +1,0 @@
-When reviewing the report of tests, noticed that the last test in a suite gets
-included in the next suite.  Fix.
