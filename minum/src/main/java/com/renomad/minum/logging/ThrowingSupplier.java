@@ -1,5 +1,7 @@
 package com.renomad.minum.logging;
 
+import com.renomad.minum.logging.model.ILogger;
+
 /**
  * a functional interface used in {@link ILogger}, allows exceptions
  * to bubble up.

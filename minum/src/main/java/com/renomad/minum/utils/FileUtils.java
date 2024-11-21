@@ -1,7 +1,9 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.state.Constants;
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.model.ILogger;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,10 +31,10 @@ public final class FileUtils {
      * </ul>
      */
     public static final Pattern badFilePathPatterns = Pattern.compile("//|\\.\\.|:");
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final IFileReader fileReader;
 
-    public FileUtils(ILogger logger, Constants constants) {
+    public FileUtils(CanonicalLogger logger, Constants constants) {
         this(
                 logger,
                 new FileReader(
@@ -44,7 +46,7 @@ public final class FileUtils {
     /**
      * This version of the constructor is mainly for testing
      */
-    FileUtils(ILogger logger, IFileReader fileReader) {
+    FileUtils(CanonicalLogger logger, IFileReader fileReader) {
         this.logger = logger;
         this.fileReader = fileReader;
     }

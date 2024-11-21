@@ -20,9 +20,9 @@ use cases.
  *
  * a million writes in 500 milliseconds means 2 million writes in one sec.
  */
-logger.test("Just how fast is our minum.database?");{
+canonicalLogger.test("Just how fast is our minum.database?");{
     // clear out the directory to start
-    FileUtils.deleteDirectoryRecursivelyIfExists(foosDirectory, logger);
+    FileUtils.deleteDirectoryRecursivelyIfExists(foosDirectory, canonicalLogger);
     final var db = new Db<Foo>(foosDirectory, context);
     MyThread.sleep(10);
 
@@ -51,8 +51,8 @@ logger.test("Just how fast is our minum.database?");{
             db.persistToDisk(newFoo);
         }
     }
-    logger.logDebug(() -> "It took " + innerTimer.stopTimer() + " milliseconds to make the updates in memory");
+    canonicalLogger.logDebug(() -> "It took " + innerTimer.stopTimer() + " milliseconds to make the updates in memory");
     db.stop(10, 20);
-    logger.logDebug(() -> "It took " + outerTimer.stopTimer() + " milliseconds to finish writing everything to disk");
+    canonicalLogger.logDebug(() -> "It took " + outerTimer.stopTimer() + " milliseconds to finish writing everything to disk");
 }
 ```

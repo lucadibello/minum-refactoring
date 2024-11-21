@@ -7,7 +7,7 @@ import com.renomad.minum.utils.FileUtils;
 import com.renomad.minum.utils.InvariantException;
 import com.renomad.minum.web.*;
 import com.renomad.minum.web.FunctionalTesting.TestResponse;
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.utils.MyThread;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -32,7 +32,7 @@ import static com.renomad.minum.web.StatusLine.StatusCode.*;
  */
 public class FunctionalTests {
 
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
     private static Context context;
     private static FunctionalTesting ft;
     private static FullSystem fullSystem;
@@ -40,7 +40,7 @@ public class FunctionalTests {
     @BeforeClass
     public static void init() {
         context = buildTestingContext("_integration_test");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
         var fileUtils = new FileUtils(logger, context.getConstants());
         fileUtils.deleteDirectoryRecursivelyIfExists(Path.of(context.getConstants().dbDirectory));
         fullSystem = new FullSystem(context);

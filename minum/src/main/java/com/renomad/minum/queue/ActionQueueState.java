@@ -1,5 +1,7 @@
 package com.renomad.minum.queue;
 
+import com.renomad.minum.queue.model.IActionQueue;
+
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -12,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ActionQueueState {
 
-    private final Queue<AbstractActionQueue> aqQueue;
+    private final Queue<IActionQueue> aqQueue;
 
     public ActionQueueState() {
         aqQueue = new LinkedBlockingQueue<>();
@@ -22,11 +24,11 @@ public class ActionQueueState {
         return aqQueue.toString();
     }
 
-    public void offerToQueue(AbstractActionQueue actionQueue) {
+    public void offerToQueue(IActionQueue actionQueue) {
         aqQueue.offer(actionQueue);
     }
 
-    public AbstractActionQueue pollFromQueue() {
+    public IActionQueue pollFromQueue() {
         return aqQueue.poll();
     }
 

@@ -1,7 +1,7 @@
 package com.renomad.minum.utils;
 
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.testing.TestFailureException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,12 +14,12 @@ import static com.renomad.minum.testing.TestFramework.*;
 public class ThrowingRunnableTests {
 
     private static Context context;
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
 
     @BeforeClass
     public static void init() {
         context = buildTestingContext("unit_tests");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
     }
 
     @AfterClass

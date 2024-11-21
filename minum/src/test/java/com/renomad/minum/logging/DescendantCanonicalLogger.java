@@ -1,26 +1,23 @@
 package com.renomad.minum.logging;
 
-import com.renomad.minum.queue.AbstractActionQueue;
 import com.renomad.minum.utils.MyThread;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.renomad.minum.utils.TimeUtils.getTimestampIsoInstant;
-
 /**
  * This is an example of a custom logger, exercised in the tests.
  * This should give a good basis for your own custom logger if needed.
  */
-public class DescendantLogger extends Logger {
+public class DescendantCanonicalLogger extends CanonicalLogger {
 
     public static final int MAX_CACHE_SIZE = 30;
     private final Queue<String> recentLogLines;
     private final Map<CustomLoggingLevel, Boolean> logLevels;
     private final ReentrantLock loggingLock;
 
-    public DescendantLogger(Logger logger) {
-        super(logger);
+    public DescendantCanonicalLogger(CanonicalLogger canonicalLogger) {
+        super(canonicalLogger);
         logLevels = new HashMap<>();
         this.recentLogLines = new TestLoggerQueue(MAX_CACHE_SIZE);
         logLevels.put(CustomLoggingLevel.REQUEST, true);
@@ -39,7 +36,7 @@ public class DescendantLogger extends Logger {
         loggingLock.lock();
         try {
             addToCache(msg);
-            logHelper(msg, CustomLoggingLevel.REQUEST, logLevels, loggingActionQueue);
+            log(msg, CustomLoggingLevel.REQUEST);
         } finally {
             loggingLock.unlock();
         }
@@ -70,48 +67,6 @@ public class DescendantLogger extends Logger {
         return receivedMessage;
     }
 
-    static void logHelper(
-            ThrowingSupplier<String, Exception> msg,
-            CustomLoggingLevel loggingLevel,
-            Map<CustomLoggingLevel, Boolean> logLevels,
-            AbstractActionQueue loggingActionQueue
-    ) {
-        if (Boolean.TRUE.equals(logLevels.get(loggingLevel))) {
-            String receivedMessage;
-            try {
-                receivedMessage = msg.get();
-            } catch (Exception ex) {
-                receivedMessage = "EXCEPTION DURING GET: " + ex;
-            }
-            String finalReceivedMessage = receivedMessage;
-            if (loggingActionQueue == null || loggingActionQueue.isStopped()) {
-                Object[] args = new Object[]{getTimestampIsoInstant(), loggingLevel.name(), showWhiteSpace(finalReceivedMessage)};
-                System.out.printf("%s\t%s\t%s%n", args);
-            } else {
-                loggingActionQueue.enqueue("Logger#logHelper(" + receivedMessage + ")", () -> {
-                    Object[] args = new Object[]{getTimestampIsoInstant(), loggingLevel.name(), showWhiteSpace(finalReceivedMessage)};
-                    System.out.printf("%s\t%s\t%s%n", args);
-                });
-            }
-        }
-    }
-
-    /**
-     * Given a string that may have whitespace chars, render it in a way we can see
-     */
-    static String showWhiteSpace(String msg) {
-        if (msg == null) return "(NULL)";
-        if (msg.isEmpty()) return "(EMPTY)";
-
-        // if we have tabs, returns, newlines in the text, show them
-        String text = msg
-                .replace("\t", "\\t")
-                .replace("\r", "\\r")
-                .replace("\n", "\\n");
-
-        if (text.isBlank()) return "(BLANK)";
-        return text;
-    }
     /**
      * Whether the given string exists in the log messages. May
      * exist multiple times.

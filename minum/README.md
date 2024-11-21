@@ -168,7 +168,7 @@ db.delete(foo);
 Writing a log statement:
 
 ```java
-logger.logDebug(() -> "hello");
+canonicalLogger.logDebug(() -> "hello");
 ```
 
 Parsing an HTML document:
@@ -238,5 +238,5 @@ byte[] photoBytes = body.asBytes("image_uploads");
 Checking for a log message during tests:
 
 ```java
-assertTrue(logger.doesMessageExist("Bad path requested at readFile: ../testingreadfile.txt"));
+assertTrue(canonicalLogger.doesMessageExist("Bad path requested at readFile: ../testingreadfile.txt"));
 ```

@@ -1,8 +1,9 @@
 package com.renomad.minum.testing;
 
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.queue.ActionQueueKiller;
 import com.renomad.minum.utils.ThrowingRunnable;
 import com.renomad.minum.web.FullSystem;
@@ -242,7 +243,7 @@ public final class TestFramework {
 
     /**
      * This builds a context very similarly to {@link FullSystem#buildContext()},
-     * except that it uses {@link TestLogger} instead of {@link com.renomad.minum.logging.Logger}
+     * except that it uses {@link TestCanonicalLogger} instead of {@link CanonicalLogger}
      * @param loggerName this will assign a human-readable name to the logger's
      *                   LoggingActionQueue so we can distinguish it
      *                   when reviewing the threads
@@ -253,7 +254,7 @@ public final class TestFramework {
     public static Context buildTestingContext(String loggerName, Properties properties) {
         var constants = new Constants(properties);
         var executorService = Executors.newVirtualThreadPerTaskExecutor();
-        var logger = new TestLogger(constants, executorService, loggerName);
+        var logger = new TestCanonicalLogger(constants, executorService, loggerName);
 
         var context = new Context(executorService, constants);
 

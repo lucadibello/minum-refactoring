@@ -1,6 +1,6 @@
 package com.renomad.minum.utils;
 
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +15,12 @@ import static com.renomad.minum.testing.TestFramework.*;
  */
 public class RingBufferTests {
 
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
         Context ctx = buildTestingContext("testing_ring_buffer");
-        this.logger = (TestLogger)ctx.getLogger();
+        this.logger = (TestCanonicalLogger)ctx.getLogger();
     }
 
     /**

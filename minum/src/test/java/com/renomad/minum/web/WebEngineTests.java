@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,14 +16,14 @@ public class WebEngineTests {
 
     private static Context context;
     static private WebEngine webEngine;
-    static private TestLogger logger;
+    static private TestCanonicalLogger logger;
 
     @BeforeClass
     public static void setUpClass() {
         context = buildTestingContext("WebEngine Tests");
         var webFramework = new WebFramework(context);
         webEngine = new WebEngine(context, webFramework);
-        logger = (TestLogger)context.getLogger();
+        logger = (TestCanonicalLogger)context.getLogger();
     }
 
 

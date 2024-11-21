@@ -1,7 +1,7 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.security.ForbiddenUseException;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.TheBrig;
 import com.renomad.minum.state.Context;
@@ -51,9 +51,9 @@ public class WebTests {
     static private ExecutorService es;
     static private IInputStreamUtils inputStreamUtils;
     static private Context context;
-    static private TestLogger logger;
+    static private TestCanonicalLogger logger;
     private static String gettysburgAddress;
-    private static Headers defaultHeader = new Headers(List.of());
+    private static final Headers defaultHeader = new Headers(List.of());
 
     /**
      * The length of time, in milliseconds, we will wait for the server to close
@@ -75,7 +75,7 @@ public class WebTests {
         context = buildTestingContext("unit_tests",properties);
         es = context.getExecutorService();
         inputStreamUtils = new InputStreamUtils(context.getConstants().maxReadLineSizeBytes);
-        logger = (TestLogger)context.getLogger();
+        logger = (TestCanonicalLogger)context.getLogger();
         fileUtils = new FileUtils(logger, context.getConstants());
         gettysburgAddress = Files.readString(Path.of("src/test/resources/gettysburg_address.txt"));
     }

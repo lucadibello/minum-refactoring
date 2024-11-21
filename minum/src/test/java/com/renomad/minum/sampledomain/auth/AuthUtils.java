@@ -1,9 +1,10 @@
 package com.renomad.minum.sampledomain.auth;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.database.Db;
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.model.ILogger;
 import com.renomad.minum.utils.CryptoUtils;
 import com.renomad.minum.utils.FileUtils;
 import com.renomad.minum.utils.InvariantException;
@@ -30,7 +31,7 @@ import static com.renomad.minum.web.StatusLine.StatusCode.*;
  */
 public class AuthUtils {
 
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final Db<User> userDiskData;
     private final Db<SessionId> sessionDiskData;
 

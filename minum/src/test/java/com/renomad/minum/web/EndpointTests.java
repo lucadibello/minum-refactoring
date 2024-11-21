@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +16,12 @@ import static com.renomad.minum.web.RequestLine.Method.GET;
 public class EndpointTests {
 
 
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
         Context context = buildTestingContext("testing endpoints");
-        this.logger = (TestLogger)context.getLogger();
+        this.logger = (TestCanonicalLogger)context.getLogger();
     }
 
     /**

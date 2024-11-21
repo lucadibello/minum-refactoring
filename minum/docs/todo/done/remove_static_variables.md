@@ -60,7 +60,7 @@ Approach:
 1. global values are the worst.  Systematically adjust so they are held within an
    instance.
 2. static methods are ok as long as they don't rely on any state anywhere.  However,
-   many of my methods would benefit from having access to the logger.  For that 
+   many of my methods would benefit from having access to the canonicalLogger.  For that 
    reason, the plan is to get pretty much everything into an instance.  I want
    a crystal-clear (or maybe ... marginally less muddy) scoping of my system's parts.
 

@@ -1,6 +1,8 @@
 package com.renomad.minum.utils;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.LoggingLevel;
+import com.renomad.minum.logging.model.ILogger;
+import com.renomad.minum.logging.model.ILoggingLevel;
 
 /**
  * This exists so that we are able to slightly better manage
@@ -21,12 +23,12 @@ public interface ThrowingRunnable {
      */
     void run() throws Exception;
 
-    static Runnable throwingRunnableWrapper(ThrowingRunnable throwingRunnable, ILogger logger) {
+    static Runnable throwingRunnableWrapper(ThrowingRunnable throwingRunnable, ILogger<ILoggingLevel> logger) {
         return () -> {
             try {
                 throwingRunnable.run();
             } catch (Exception ex) {
-                logger.logAsyncError(() -> StacktraceUtils.stackTraceToString(ex));
+                logger.log(() -> StacktraceUtils.stackTraceToString(ex), LoggingLevel.ASYNC_ERROR);
             }
         };
     }

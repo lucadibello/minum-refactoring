@@ -1,8 +1,8 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,14 +17,14 @@ import java.util.Map;
 import static com.renomad.minum.testing.TestFramework.*;
 
 public class FileReaderTests {
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
     private Map<String, byte[]> lruCache;
     private Context context;
 
     @Before
     public void init() {
         context = buildTestingContext("unit_tests");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
         Constants constants = context.getConstants();
         lruCache = LRUCache.getLruCache(constants.maxElementsLruCacheStaticFiles);
     }

@@ -465,9 +465,9 @@ The steps to this are:
 
 ```java
 try {
-    FileUtils.makeDirectory(logger, photoDirectory);
+    FileUtils.makeDirectory(canonicalLogger, photoDirectory);
 } catch (IOException e) {
-    logger.logAsyncError(() -> StacktraceUtils.stackTraceToString(e));
+    canonicalLogger.logAsyncError(() -> StacktraceUtils.stackTraceToString(e));
 }
 ```
 
@@ -478,7 +478,7 @@ Path photoPath = photoDirectory.resolve(newFilename);
 try {
     Files.write(photoPath, photoBytes);
 } catch (IOException e) {
-    logger.logAsyncError(() -> StacktraceUtils.stackTraceToString(e));
+    canonicalLogger.logAsyncError(() -> StacktraceUtils.stackTraceToString(e));
     return new Response(_500_INTERNAL_SERVER_ERROR, e.toString(), Map.of("Content-Type", "text/plain;charset=UTF-8"));
 }
 ```

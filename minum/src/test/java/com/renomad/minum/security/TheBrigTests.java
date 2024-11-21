@@ -1,7 +1,7 @@
 package com.renomad.minum.security;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.utils.FileUtils;
 import com.renomad.minum.utils.MyThread;
 import org.junit.AfterClass;
@@ -16,7 +16,7 @@ import static com.renomad.minum.testing.TestFramework.*;
 public class TheBrigTests {
 
     private static Context context;
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
     private static FileUtils fileUtils;
 
     @BeforeClass
@@ -25,7 +25,7 @@ public class TheBrigTests {
         props.setProperty("DB_DIRECTORY", "out/brigdb");
         props.setProperty("IS_THE_BRIG_ENABLED", "true");
         context = buildTestingContext("unit_tests", props);
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
         fileUtils = new FileUtils(logger, context.getConstants());
     }
 

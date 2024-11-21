@@ -1,4 +1,6 @@
-package com.renomad.minum.database;
+package com.renomad.minum.exceptions;
+
+import com.renomad.minum.database.Db;
 
 import java.io.Serial;
 

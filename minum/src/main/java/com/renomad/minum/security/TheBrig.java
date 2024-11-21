@@ -1,9 +1,12 @@
 package com.renomad.minum.security;
 
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.logging.LoggingLevel;
+import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.database.Db;
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.model.ILogger;
 import com.renomad.minum.utils.SearchUtils;
 import com.renomad.minum.utils.ThrowingRunnable;
 import com.renomad.minum.utils.TimeUtils;
@@ -18,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public final class TheBrig implements ITheBrig {
     private final ExecutorService es;
     private final Db<Inmate> inmatesDb;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final Constants constants;
     private final ReentrantLock lock = new ReentrantLock();
     private Thread myThread;
@@ -92,13 +95,13 @@ public final class TheBrig implements ITheBrig {
      * @param now the current time, in milliseconds past the epoch
      * @param inmatesDb the database of all inmates
      */
-    static void processInmateList(long now, Collection<Inmate> inmates, ILogger logger, Db<Inmate> inmatesDb) {
+    static void processInmateList(long now, Collection<Inmate> inmates, ILogger<ILoggingLevel> logger, Db<Inmate> inmatesDb) {
         List<String> keysToRemove = new ArrayList<>();
         for (Inmate clientKeyAndDuration : inmates) {
             reviewForParole(now, keysToRemove, clientKeyAndDuration, logger);
         }
         for (var k : keysToRemove) {
-            logger.logTrace(() -> "TheBrig: removing " + k + " from jail");
+            logger.log(() -> "TheBrig: removing " + k + " from jail", LoggingLevel.TRACE);
             Inmate inmateToRemove = SearchUtils.findExactlyOne(inmates.stream(), x -> x.getClientId().equals(k));
             inmatesDb.delete(inmateToRemove);
         }
@@ -108,11 +111,11 @@ public final class TheBrig implements ITheBrig {
             long now,
             List<String> keysToRemove,
             Inmate inmate,
-            ILogger logger) {
+            ILogger<ILoggingLevel> logger) {
         // if the release time is in the past (that is, the release time is
         // before / less-than now), add them to the list to be released.
         if (inmate.getReleaseTime() < now) {
-            logger.logTrace(() -> "UnderInvestigation: " + inmate.getClientId() + " has paid its dues as of " + inmate.getReleaseTime() + " and is getting released. Current time: " + now);
+            logger.log(() -> "UnderInvestigation: " + inmate.getClientId() + " has paid its dues as of " + inmate.getReleaseTime() + " and is getting released. Current time: " + now, LoggingLevel.TRACE);
             keysToRemove.add(inmate.getClientId());
         }
     }

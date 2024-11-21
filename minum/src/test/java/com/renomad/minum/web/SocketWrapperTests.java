@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +15,12 @@ import static com.renomad.minum.testing.TestFramework.buildTestingContext;
 
 public class SocketWrapperTests {
 
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
         Context context = buildTestingContext("testing socket wrapper");
-        this.logger = (TestLogger)context.getLogger();
+        this.logger = (TestCanonicalLogger)context.getLogger();
     }
 
     @Test

@@ -1,9 +1,11 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.logging.LoggingLevel;
+import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.queue.ActionQueueKiller;
 import com.renomad.minum.state.Constants;
-import com.renomad.minum.logging.ILogger;
-import com.renomad.minum.logging.Logger;
+import com.renomad.minum.logging.model.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.TheBrig;
 import com.renomad.minum.state.Context;
@@ -26,7 +28,7 @@ import java.util.concurrent.Executors;
  */
 public final class FullSystem {
 
-    final ILogger logger;
+    final CanonicalLogger logger;
     private final Constants constants;
     private final FileUtils fileUtils;
     private IServer server;
@@ -69,7 +71,7 @@ public final class FullSystem {
     public static Context buildContext() {
         var constants = new Constants();
         var executorService = Executors.newVirtualThreadPerTaskExecutor();
-        var logger = new Logger(constants, executorService, "primary logger");
+        var logger = new CanonicalLogger(constants, executorService, "primary logger");
 
         var context = new Context(executorService, constants);
         context.setLogger(logger);
@@ -201,17 +203,17 @@ public final class FullSystem {
      * The core code for closing resources
      * @param fullSystemName the name of this FullSystem, in cases where several are running concurrently
      */
-    static void closeCore(ILogger logger, Context context, IServer server, IServer sslServer, String fullSystemName) {
+    static void closeCore(ILogger<ILoggingLevel> logger, Context context, IServer server, IServer sslServer, String fullSystemName) {
         try {
-            logger.logDebug(() -> "Received shutdown command");
-            logger.logDebug(() -> " Stopping the server: " + server);
+            logger.log(() -> "Received shutdown command", LoggingLevel.DEBUG);
+            logger.log(() -> " Stopping the server: " + server, LoggingLevel.DEBUG);
             server.close();
-            logger.logDebug(() -> " Stopping the SSL server: " + server);
+            logger.log(() -> " Stopping the SSL server: " + server, LoggingLevel.DEBUG);
             sslServer.close();
-            logger.logDebug(() -> "Killing all the action queues: " + context.getActionQueueState().aqQueueAsString());
+            logger.log(() -> "Killing all the action queues: " + context.getActionQueueState().aqQueueAsString(), LoggingLevel.DEBUG);
             new ActionQueueKiller(context).killAllQueues();
-            logger.logDebug(() -> String.format(
-                    "%s %s says: Goodbye world!%n", TimeUtils.getTimestampIsoInstant(), fullSystemName));
+            logger.log(() -> String.format(
+                    "%s %s says: Goodbye world!%n", TimeUtils.getTimestampIsoInstant(), fullSystemName), LoggingLevel.DEBUG);
         } catch (Exception e) {
             throw new WebServerException(e);
         }

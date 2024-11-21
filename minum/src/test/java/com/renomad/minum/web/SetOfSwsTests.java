@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.ConcurrentSet;
 import org.junit.After;
@@ -12,12 +12,12 @@ import static com.renomad.minum.testing.TestFramework.*;
 public class SetOfSwsTests {
 
     private Context context;
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
         context = buildTestingContext("testing SetOfSws");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
     }
 
     @After

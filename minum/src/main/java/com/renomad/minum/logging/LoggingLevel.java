@@ -1,9 +1,11 @@
 package com.renomad.minum.logging;
 
+import com.renomad.minum.logging.model.ILoggingLevel;
+
 /**
  * An enumeration of the levels of logging our system provides.
  */
-public enum LoggingLevel {
+public enum LoggingLevel implements ILoggingLevel {
 
     /**
      * Information useful for debugging.

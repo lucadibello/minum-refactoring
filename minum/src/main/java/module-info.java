@@ -10,4 +10,7 @@ module com.renomad.minum {
   exports com.renomad.minum.testing;
   exports com.renomad.minum.utils;
   exports com.renomad.minum.web;
+    exports com.renomad.minum.logging.model;
+    exports com.renomad.minum.queue.model;
+    exports com.renomad.minum.exceptions;
 }

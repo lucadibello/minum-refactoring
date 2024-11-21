@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Used in {@link TestLogger} as a circular queue to store
+ * Used in {@link TestCanonicalLogger} as a circular queue to store
  * the most recent log statements for analysis.
  */
 public final class TestLoggerQueue extends ArrayDeque<String> {

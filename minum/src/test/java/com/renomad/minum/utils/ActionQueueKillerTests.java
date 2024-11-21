@@ -1,9 +1,10 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.queue.ActionQueueKiller;
+import com.renomad.minum.queue.model.IActionQueue;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +17,12 @@ import static com.renomad.minum.testing.TestFramework.*;
 public class ActionQueueKillerTests {
 
     private Context context;
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
         context = buildTestingContext("ActionQueueKillerTests");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
     }
 
     @After
@@ -53,7 +54,7 @@ public class ActionQueueKillerTests {
 
     @Test
     public void test_KillAllQueues() {
-        TestLogger killAllQueuesLogger = new TestLogger(context.getConstants(), context.getExecutorService(), "testing kill all queues");
+        TestCanonicalLogger killAllQueuesLogger = new TestCanonicalLogger(context.getConstants(), context.getExecutorService(), "testing kill all queues");
         Context context1 = new Context(context.getExecutorService(), context.getConstants());
         context1.setLogger(killAllQueuesLogger);
         var aqk = new ActionQueueKiller(context1);
@@ -75,7 +76,7 @@ public class ActionQueueKillerTests {
      */
     @Test
     public void test_KillAllQueues_NeedingInterruption() {
-        ActionQueue aq = new ActionQueue("testing interruption", context).initialize();
+        IActionQueue aq = new ActionQueue("testing interruption", context).initialize();
         context.getActionQueueState().offerToQueue(aq);
         var aqk = new ActionQueueKiller(context);
         Thread.ofVirtual().start(() -> {

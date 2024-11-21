@@ -1,8 +1,8 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.testing.RegexUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,12 +13,12 @@ import static com.renomad.minum.testing.TestFramework.*;
 public class ActionQueueTests {
 
     private static Context context;
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
 
     @BeforeClass
     public static void init() {
         context = buildTestingContext("unit_tests");
-        logger = (TestLogger)context.getLogger();
+        logger = (TestCanonicalLogger)context.getLogger();
     }
 
     @AfterClass
@@ -41,17 +41,17 @@ public class ActionQueueTests {
         });
 
         // unavoidable race condition - if I check logger's list of messages without
-        // waiting, I will definitely get there before actionqueue.
+        // waiting, I will definitely get there before ActionQueue.
         MyThread.sleep(50);
         String loggedMessage = logger.findFirstMessageThatContains(message);
         assertTrue(!loggedMessage.isBlank(),
-                "logged message must include expected message.  What was logged: " + loggedMessage);
+                "logged message must include expected message. What was logged: " + loggedMessage);
     }
 
     @Test
     public void test_Stopping() {
         var aq = new ActionQueue("Test ActionQueue", context).initialize();
-        assertFalse(aq.isStopped());
+        assertFalse(aq.isClosed());
 
         aq.enqueue("testing action", () -> {
             MyThread.sleep(10);
@@ -61,7 +61,7 @@ public class ActionQueueTests {
         aq.stop(0,0);
         var msg = logger.findFirstMessageThatContains("Queue Test ActionQueue has");
         assertFalse(RegexUtils.find("Queue Test ActionQueue has .? elements left but we're done waiting", msg).isEmpty());
-        assertTrue(aq.isStopped());
+        assertTrue(aq.isClosed());
         assertThrows(UtilsException.class,
                 "failed to enqueue check if stopped - ActionQueue \"Test ActionQueue\" is stopped",
                 () ->  aq.enqueue("check if stopped", () -> System.out.println("testing if stopped")));

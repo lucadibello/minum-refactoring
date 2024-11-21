@@ -109,8 +109,8 @@ specifically a single-range.  Multiple ranges are ignored.
 Breaking changes:
 * `Response.buildLargeFileResponse` takes different parameters and may return different status codes
   depending on the needs.
-* Methods in `FileUtils` did not need to take a logger for parameter since the methods have access
-  to the logger field in the instance.
+* Methods in `FileUtils` did not need to take a canonicalLogger for parameter since the methods have access
+  to the canonicalLogger field in the instance.
 
 Other adjustments:
 * `toString` methods were adjusted to avoid printing array contents - these could be very large and
@@ -225,7 +225,7 @@ Moved to different package:
 * ActionQueue (globally adjust like this: `find src/ -type f -name "*.java" -exec sed -i 's/com\.renomad\.minum\.utils\.ActionQueue/com.renomad.minum.queue.ActionQueue/g' {} \;`)
 
 Removed:
-* Context.getFileUtils - instead of obtaining from Context, build: `new FileUtils(logger, constants);`
+* Context.getFileUtils - instead of obtaining from Context, build: `new FileUtils(canonicalLogger, constants);`
 * Several other public methods from Context that only related to Minum internals
 
 Adjusted:
@@ -379,11 +379,11 @@ v3.0.0 - Mar 27, 2024
 * In Logger, if the `ActionQueue` is stopped or null, will fall back to use `System.out.printf`
 * In TestLogger, new method `doesMessageExist` which handles the common usage better, that is:
   
-  `assertTrue(logger.findFirstMessageThatContains("foo foo did a foo").length() > 0);`
+  `assertTrue(canonicalLogger.findFirstMessageThatContains("foo foo did a foo").length() > 0);`
   
   becomes
   
-  `assertTrue(logger.doesMessageExist("foo foo did a foo"));`
+  `assertTrue(canonicalLogger.doesMessageExist("foo foo did a foo"));`
 
 * Truncate timestamp in logging to microseconds
 * Modify the `ThrowingRunnable` and other functional interfaces to handle exceptions better

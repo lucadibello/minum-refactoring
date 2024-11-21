@@ -1,4 +1,4 @@
-package com.renomad.minum.queue;
+package com.renomad.minum.queue.model;
 
 import com.renomad.minum.utils.RunnableWithDescription;
 import com.renomad.minum.utils.ThrowingRunnable;
@@ -15,12 +15,12 @@ import java.util.concurrent.LinkedBlockingQueue;
  * thread and the only time required is passing the
  * function of what we want to run later.
  */
-public interface AbstractActionQueue {
+public interface IActionQueue {
 
     /**
      * Start the queue's processing
      */
-    AbstractActionQueue initialize();
+    IActionQueue initialize();
 
     /**
      * Adds something to the queue to be processed.
@@ -58,7 +58,13 @@ public interface AbstractActionQueue {
     LinkedBlockingQueue<RunnableWithDescription> getQueue();
 
     /**
-     * Indicate whether this has had its {@link #stop()} method completed.
+     * Get the thread that is processing the queue.
      */
-    boolean isStopped();
+    Thread getQueueThread();
+
+    /**
+     * Indicate whether this has had its {@link #stop()} method completed
+     * and is no longer accepting new actions.
+     */
+    boolean isClosed();
 }

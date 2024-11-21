@@ -1,10 +1,10 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.htmlparsing.HtmlParseNode;
 import com.renomad.minum.htmlparsing.HtmlParser;
 import com.renomad.minum.htmlparsing.TagName;
-import com.renomad.minum.logging.ILogger;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.InvariantException;
 import com.renomad.minum.utils.StacktraceUtils;
@@ -24,7 +24,7 @@ public final class FunctionalTesting {
     private final String host;
     private final int port;
     private final IInputStreamUtils inputStreamUtils;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final Constants constants;
     private final IBodyProcessor bodyProcessor;
 

@@ -1,7 +1,7 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.security.ForbiddenUseException;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.logging.TestLoggerException;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.Inmate;
@@ -31,18 +31,18 @@ public class WebFrameworkTests {
     private WebFramework webFramework;
     static final ZonedDateTime default_zdt = ZonedDateTime.of(2022, Month.JANUARY.getValue(), 4, 9, 25, 0, 0, ZoneId.of("UTC"));
     private Context context;
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
     /**
      * Just a boring empty Headers instance for some of the methods that
      * need it but where we aren't doing anything with it.
      */
-    private Headers defaultHeaders = new Headers(List.of());
+    private final Headers defaultHeaders = new Headers(List.of());
 
     @Before
     public void initialize() {
         context = buildTestingContext("webframework_tests");
         webFramework = new WebFramework(context, default_zdt);
-        logger = (TestLogger)context.getLogger();
+        logger = (TestCanonicalLogger)context.getLogger();
     }
 
 

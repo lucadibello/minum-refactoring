@@ -1,7 +1,8 @@
 package com.renomad.minum.queue;
 
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.queue.model.IActionQueue;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.ILogger;
 import com.renomad.minum.utils.TimeUtils;
 
 /**
@@ -10,7 +11,7 @@ import com.renomad.minum.utils.TimeUtils;
 public final class ActionQueueKiller {
 
     private final Context context;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
 
     /**
      * If we were interrupted while attempting to cleanly kill the
@@ -30,14 +31,14 @@ public final class ActionQueueKiller {
      */
     public void killAllQueues() {
         logger.logDebug(() -> TimeUtils.getTimestampIsoInstant() + " Killing all queue threads. ");
-        for (AbstractActionQueue aq = context.getActionQueueState().pollFromQueue(); aq != null ; aq = context.getActionQueueState().pollFromQueue()) {
-            AbstractActionQueue finalAq = aq;
+        for (IActionQueue aq = context.getActionQueueState().pollFromQueue(); aq != null ; aq = context.getActionQueueState().pollFromQueue()) {
+            IActionQueue finalAq = aq;
             finalAq.stop();
-            logger.logDebug(() -> TimeUtils.getTimestampIsoInstant() + " killing " + ((ActionQueue)finalAq).getQueueThread());
-            if (((ActionQueue)finalAq).getQueueThread() != null) {
+            logger.logDebug(() -> TimeUtils.getTimestampIsoInstant() + " killing " + finalAq.getQueueThread());
+            if (finalAq.getQueueThread() != null) {
                 hadToInterrupt = true;
                 System.out.println("had to interrupt " + finalAq);
-                ((ActionQueue)finalAq).getQueueThread().interrupt();
+                finalAq.getQueueThread().interrupt();
             }
         }
     }

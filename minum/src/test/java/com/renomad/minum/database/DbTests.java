@@ -1,9 +1,10 @@
 package com.renomad.minum.database;
 
+import com.renomad.minum.exceptions.DbException;
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.Logger;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.testing.RegexUtils;
 import com.renomad.minum.testing.StopwatchUtils;
 import com.renomad.minum.utils.FileUtils;
@@ -35,7 +36,7 @@ import static java.util.stream.IntStream.range;
 
 public class DbTests {
     private Context context;
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
     private FileUtils fileUtils;
     static Path foosDirectory = Path.of("out/simple_db/foos");
     static Path fubarDirectory = Path.of("out/simple_db/fubar");
@@ -49,7 +50,7 @@ public class DbTests {
     @Before
     public void init() {
         context = buildTestingContext("unit_tests");
-        logger = (TestLogger)context.getLogger();
+        logger = (TestCanonicalLogger)context.getLogger();
         fileUtils = new FileUtils(logger, context.getConstants());
     }
 
@@ -898,7 +899,7 @@ public class DbTests {
     private Context buildTestingContextWithRegularLogger(String loggerName) {
         var constants = new Constants();
         var executorService = Executors.newVirtualThreadPerTaskExecutor();
-        var logger = new Logger(constants, executorService, loggerName);
+        var logger = new CanonicalLogger(constants, executorService, loggerName);
 
         var context = new Context(executorService, constants);
         context.setLogger(logger);

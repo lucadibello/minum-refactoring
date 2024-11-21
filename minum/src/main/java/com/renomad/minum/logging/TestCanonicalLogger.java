@@ -1,5 +1,6 @@
 package com.renomad.minum.logging;
 
+import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.utils.MyThread;
 
@@ -10,10 +11,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * This implementation of {@link Logger} has a few
+ * This implementation of {@link CanonicalLogger} has a few
  * extra functions that only apply to tests, like {@link #test(String)}
  */
-public final class TestLogger extends Logger {
+public final class TestCanonicalLogger extends CanonicalLogger {
 
     private final Queue<String> recentLogLines;
     public static final int MAX_CACHE_SIZE = 30;
@@ -21,9 +22,9 @@ public final class TestLogger extends Logger {
     private int testCount = 0;
 
     /**
-     * See {@link TestLogger}
+     * See {@link TestCanonicalLogger}
      */
-    public TestLogger(Constants constants, ExecutorService executorService, String name) {
+    public TestCanonicalLogger(Constants constants, ExecutorService executorService, String name) {
         super(constants, executorService, name);
         this.recentLogLines = new TestLoggerQueue(MAX_CACHE_SIZE);
         this.loggingLock = new ReentrantLock();
@@ -55,44 +56,11 @@ public final class TestLogger extends Logger {
     }
 
     @Override
-    public void logDebug(ThrowingSupplier<String, Exception> msg) {
+    public void log(ThrowingSupplier<String, Exception> msg, ILoggingLevel loggingLevel) {
         loggingLock.lock();
         try {
             addToCache(msg);
-            super.logDebug(msg);
-        } finally {
-            loggingLock.unlock();
-        }
-    }
-
-    @Override
-    public void logTrace(ThrowingSupplier<String, Exception> msg) {
-        loggingLock.lock();
-        try {
-            addToCache(msg);
-            super.logTrace(msg);
-        } finally {
-            loggingLock.unlock();
-        }
-    }
-
-    @Override
-    public void logAudit(ThrowingSupplier<String, Exception> msg) {
-        loggingLock.lock();
-        try {
-            addToCache(msg);
-            super.logAudit(msg);
-        } finally {
-            loggingLock.unlock();
-        }
-    }
-
-    @Override
-    public void logAsyncError(ThrowingSupplier<String, Exception> msg) {
-        loggingLock.lock();
-        try {
-            addToCache(msg);
-            super.logAsyncError(msg);
+            super.log(msg, loggingLevel);
         } finally {
             loggingLock.unlock();
         }
@@ -124,7 +92,7 @@ public final class TestLogger extends Logger {
         if (size == 0) {
             throw new TestLoggerException(value + " was not found in \n\t" + String.join("\n\t", recentLogLines));
         } else if (size >= 2) {
-            throw new TestLoggerException("multiple values of "+value+" found in: " + recentLogLines);
+            throw new TestLoggerException("multiple values of '"+value+"' found in recent logs");
         } else {
             return values.getFirst();
         }
@@ -139,7 +107,7 @@ public final class TestLogger extends Logger {
      *      were multiple places it was found.
      */
     public boolean doesMessageExist(String value, int lines) {
-        if (! findMessage(value, lines, recentLogLines).isEmpty()) {
+        if (!findMessage(value, lines, recentLogLines).isEmpty()) {
             return true;
         } else {
             List<String> logsBeingSearched = logLinesToSearch(lines, recentLogLines);
@@ -202,7 +170,7 @@ public final class TestLogger extends Logger {
             final var baseLength = 11;
             final var dashes = "-".repeat(msg.length() + baseLength);
 
-            loggingActionQueue.enqueue("Testlogger#test("+msg+")", () -> {
+            getLoggingActionQueue().enqueue("Testlogger#test("+msg+")", () -> {
                 testCount += 1;
                 System.out.printf("%n+%s+%n| TEST %d: %s |%n+%s+%n%n", dashes, testCount, msg, dashes);
                 recentLogLines.add(msg);
@@ -218,7 +186,7 @@ public final class TestLogger extends Logger {
 
     @Override
     public String toString() {
-        return "TestLogger using queue: " + super.loggingActionQueue.toString();
+        return "TestLogger using queue: " + super.getLoggingActionQueue().toString();
     }
 
 }

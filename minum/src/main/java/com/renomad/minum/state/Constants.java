@@ -1,6 +1,7 @@
 package com.renomad.minum.state;
 
 import com.renomad.minum.logging.LoggingLevel;
+import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.utils.TimeUtils;
 
 import java.io.FileInputStream;
@@ -73,7 +74,7 @@ public final class Constants {
     /**
      * The default logging levels
      */
-    public final List<LoggingLevel> logLevels;
+    public final Collection<ILoggingLevel> logLevels;
 
     /**
      * The path to the keystore, required for encrypted TLS communication
@@ -255,11 +256,11 @@ public final class Constants {
     /**
      * Given a list of strings representing logging levels,
      * convert it to a list of enums.  Log levels are enumerated
-     * in {@link LoggingLevel}.
+     * in {@link ILoggingLevel}.
      */
-    static List<LoggingLevel> convertLoggingStringsToEnums(List<String> logLevels) {
+    static List<ILoggingLevel> convertLoggingStringsToEnums(List<String> logLevels) {
         List<String> logLevelStrings = logLevels.stream().map(String::toUpperCase).toList();
-        List<LoggingLevel> enabledLoggingLevels = new ArrayList<>();
+        List<ILoggingLevel> enabledLoggingLevels = new ArrayList<>();
         for (LoggingLevel t : LoggingLevel.values()) {
             if (logLevelStrings.contains(t.name())) {
                 enabledLoggingLevels.add(t);

@@ -1,7 +1,7 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Constants;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.MyThread;
 import org.junit.Test;
@@ -71,7 +71,7 @@ public class FullSystemTests {
     @Test
     public void test_CloseCore() {
         Context context = buildTestingContext("Testing the closing core");
-        TestLogger logger = (TestLogger)context.getLogger();
+        TestCanonicalLogger logger = (TestCanonicalLogger)context.getLogger();
         assertThrows(WebServerException.class, "java.lang.RuntimeException: Just testing", () -> FullSystem.closeCore(logger, context, throwingServer, throwingServer, "my test system"));
     }
 

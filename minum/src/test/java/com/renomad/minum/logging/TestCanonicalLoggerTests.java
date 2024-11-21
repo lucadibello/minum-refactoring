@@ -8,17 +8,17 @@ import org.junit.Test;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static com.renomad.minum.logging.TestLogger.MAX_CACHE_SIZE;
+import static com.renomad.minum.logging.TestCanonicalLogger.MAX_CACHE_SIZE;
 import static com.renomad.minum.testing.TestFramework.*;
 
-public class TestLoggerTests {
+public class TestCanonicalLoggerTests {
 
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
         Context context = buildTestingContext("TestLogger tests");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
     }
 
     @Test
@@ -34,7 +34,8 @@ public class TestLoggerTests {
         logger.logDebug(() -> "foo");
         var ex = assertThrows(TestLoggerException.class,
                 () -> logger.findFirstMessageThatContains("foo"));
-        assertTrue(ex.getMessage().contains("multiple values of foo found in:"));
+        System.out.println(ex.getMessage());
+        assertTrue(ex.getMessage().contains("multiple values of 'foo' found in recent logs"));
     }
 
     /**
@@ -57,7 +58,7 @@ public class TestLoggerTests {
     }
 
     /**
-     * This is a test of the test utility {@link TestLogger#findFirstMessageThatContains(String)}.
+     * This is a test of the test utility {@link TestCanonicalLogger#findFirstMessageThatContains(String)}.
      * It allows us to examine the past log messges for something containing a string.  This comes
      * in handy for examining error message and confirming state changes.
      */
@@ -67,7 +68,7 @@ public class TestLoggerTests {
         recentLogLines.offer("word1");
         recentLogLines.offer("word2");
         recentLogLines.offer("word3");
-        List<String> foundWords = TestLogger.findMessage("word2", 3, recentLogLines);
+        List<String> foundWords = TestCanonicalLogger.findMessage("word2", 3, recentLogLines);
         assertEquals(foundWords.getFirst(), "word2");
     }
 
@@ -77,7 +78,7 @@ public class TestLoggerTests {
         recentLogLines.offer("word1");
         recentLogLines.offer("word2");
         recentLogLines.offer("word3");
-        assertEquals(TestLogger.findMessage("foo", 3, recentLogLines), List.of());
+        assertEquals(TestCanonicalLogger.findMessage("foo", 3, recentLogLines), List.of());
     }
 
     @Test
@@ -86,7 +87,7 @@ public class TestLoggerTests {
         recentLogLines.offer("word1");
         recentLogLines.offer("word2");
         recentLogLines.offer("word3");
-        assertEquals(TestLogger.findMessage("word2", 1, recentLogLines), List.of());
+        assertEquals(TestCanonicalLogger.findMessage("word2", 1, recentLogLines), List.of());
     }
 
     @Test
@@ -97,7 +98,7 @@ public class TestLoggerTests {
         recentLogLines.offer("word3");
         assertThrows(TestLoggerException.class,
                 "number of recent log lines must be a positive number",
-                () -> TestLogger.findMessage("word2", -1, recentLogLines));
+                () -> TestCanonicalLogger.findMessage("word2", -1, recentLogLines));
     }
 
     @Test
@@ -105,7 +106,7 @@ public class TestLoggerTests {
         ArrayBlockingQueue<String> recentLogLines = new ArrayBlockingQueue<>(20);
         assertThrows(TestLoggerException.class,
                 "number of recent log lines must be a positive number",
-                () -> TestLogger.findMessage("word2", -1, recentLogLines));
+                () -> TestCanonicalLogger.findMessage("word2", -1, recentLogLines));
     }
 
     /**
@@ -118,7 +119,7 @@ public class TestLoggerTests {
         recentLogLines.offer("word1");
         recentLogLines.offer("word2");
         recentLogLines.offer("word3");
-        List<String> foundWords = TestLogger.findMessage("word2", MAX_CACHE_SIZE - 1, recentLogLines);
+        List<String> foundWords = TestCanonicalLogger.findMessage("word2", MAX_CACHE_SIZE - 1, recentLogLines);
         assertEquals(foundWords.getFirst(), "word2");
     }
 
@@ -131,14 +132,14 @@ public class TestLoggerTests {
         List<String> recentLogLines = List.of();
         assertThrows(TestLoggerException.class,
                 "foo was not found in \n\t",
-                () -> TestLogger.checkValidityOfResults("foo", List.of(), recentLogLines));
+                () -> TestCanonicalLogger.checkValidityOfResults("foo", List.of(), recentLogLines));
     }
 
     @Test
     public void test_findFirstMessage_CheckValidity_NotFound() {
         List<String> recentLogLines = List.of("word1", "word2", "word3");
         var ex = assertThrows(TestLoggerException.class,
-                () -> TestLogger.checkValidityOfResults("foo", List.of(), recentLogLines));
+                () -> TestCanonicalLogger.checkValidityOfResults("foo", List.of(), recentLogLines));
         assertEquals(ex.getMessage(), "foo was not found in \n\tword1\n" +
                 "\tword2\n" +
                 "\tword3");
@@ -148,12 +149,12 @@ public class TestLoggerTests {
     public void test_findFirstMessage_CheckValidity_TooMany() {
         List<String> recentLogLines = List.of("word1", "word2", "word2", "word3");
         assertThrows(TestLoggerException.class,
-                "multiple values of word2 found in: [word1, word2, word2, word3]",
-                () -> TestLogger.checkValidityOfResults("word2", List.of("word2","word2"), recentLogLines));
+                "multiple values of 'word2' found in recent logs",
+                () -> TestCanonicalLogger.checkValidityOfResults("word2", List.of("word2","word2"), recentLogLines));
     }
 
     /**
-     * The {@link TestLogger} has a method, "test", that is used to
+     * The {@link TestCanonicalLogger} has a method, "test", that is used to
      * display information about the test in the logs.  That way, the
      * log message is displayed very close to the logs about the test.
      * If instead we merely used printf, the output message would probably

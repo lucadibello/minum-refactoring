@@ -1,6 +1,7 @@
 package com.renomad.minum.state;
 
 import com.renomad.minum.logging.LoggingLevel;
+import com.renomad.minum.logging.model.ILoggingLevel;
 import org.junit.Test;
 
 import java.util.List;
@@ -64,14 +65,14 @@ public class ConstantsTests {
     @Test
     public void test_convertLoggingStringsToEnums() {
         List<String> logLevels = List.of("DEBUG");
-        List<LoggingLevel> result = Constants.convertLoggingStringsToEnums(logLevels);
+        List<ILoggingLevel> result = Constants.convertLoggingStringsToEnums(logLevels);
         assertEquals(result.toString(), List.of(LoggingLevel.DEBUG).toString());
     }
 
     @Test
     public void test_convertLoggingStringsToEnums_NegativeCase() {
         List<String> logLevels = List.of("FUBAR");
-        List<LoggingLevel> result = Constants.convertLoggingStringsToEnums(logLevels);
+        List<ILoggingLevel> result = Constants.convertLoggingStringsToEnums(logLevels);
         assertEquals(result.toString(), List.of().toString());
     }
 }

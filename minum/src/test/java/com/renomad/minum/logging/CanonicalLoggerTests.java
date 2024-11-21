@@ -1,24 +1,26 @@
 package com.renomad.minum.logging;
 
+import com.renomad.minum.logging.model.ILoggingLevel;
+import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
+import com.renomad.minum.utils.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static com.renomad.minum.testing.TestFramework.*;
 
-public class LoggerTests {
+public class CanonicalLoggerTests {
     private Context context;
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
         context = buildTestingContext("TestLogger tests");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
     }
 
     @After
@@ -32,7 +34,9 @@ public class LoggerTests {
      */
     @Test
     public void testLogHelper() {
-        Logger.logHelper(() -> "testing...", LoggingLevel.AUDIT, Map.of(LoggingLevel.AUDIT, true), null);
+        // Logger with only AUDITS
+        DefaultLogger consoleLogger = new DefaultLogger(List.of(LoggingLevel.AUDIT), "console");
+        consoleLogger.log(() -> "testing...", LoggingLevel.AUDIT);
         var ex = assertThrows(TestLoggerException.class, () -> logger.findFirstMessageThatContains("testing..."));
         assertTrue(ex.getMessage().contains("testing... was not found in"));
     }
@@ -43,13 +47,16 @@ public class LoggerTests {
      */
     @Test
     public void testLogHelper_LoggingDisabled() {
-        Logger.logHelper(() -> "testing...", LoggingLevel.AUDIT, Map.of(LoggingLevel.AUDIT, false), null);
+        // Logger without any active level
+        DefaultLogger consoleLogger = new DefaultLogger(List.of(), "console");
+        consoleLogger.log(() -> "testing...", LoggingLevel.AUDIT);
+        consoleLogger.log(() -> "testing...", LoggingLevel.AUDIT);
         var ex = assertThrows(TestLoggerException.class, () -> logger.findFirstMessageThatContains("testing..."));
         assertTrue(ex.getMessage().contains("testing... was not found in"));
     }
 
     /**
-     * The {@link LoggingActionQueue} is what enables the log to send its
+     * The {@link ActionQueue} is what enables the log to send its
      * messages for later output.  It's critical.  But, there are situations
      * where the queue would not be available - primarily, 1) when the system
      * has just started up, and 2) When it's shutting down.  During those phases,
@@ -61,9 +68,12 @@ public class LoggerTests {
     public void testLogHelper_EdgeCase_LoggingActionQueueStopping() {
         Properties props = new Properties();
         var constants = new Constants(props);
-        var testQueue = new LoggingActionQueue("test queue", null, constants);
+        var testQueue = new ActionQueue("test queue", null, constants.logLevels);
         testQueue.stop(0,0);
-        Logger.logHelper(() -> "testing...", LoggingLevel.AUDIT, Map.of(LoggingLevel.AUDIT, true), testQueue);
+
+        Collection<ILoggingLevel> activeLogLevels = List.of(LoggingLevel.AUDIT);
+        CanonicalLogger canonicalLogger = new CanonicalLogger(activeLogLevels, null, "test logger", testQueue);
+        canonicalLogger.log(() -> "testing...", LoggingLevel.AUDIT);
         var ex = assertThrows(TestLoggerException.class, () -> logger.findFirstMessageThatContains("testing..."));
         assertTrue(ex.getMessage().contains("testing... was not found in"));
     }
@@ -75,10 +85,10 @@ public class LoggerTests {
      */
     @Test
     public void testShowWhiteSpace() {
-        assertEquals(Logger.showWhiteSpace(" "), "(BLANK)");
-        assertEquals(Logger.showWhiteSpace(""), "(EMPTY)");
-        assertEquals(Logger.showWhiteSpace(null), "(NULL)");
-        assertEquals(Logger.showWhiteSpace("\t\r\n"), "\\t\\r\\n");
+        assertEquals(StringUtils.showWhiteSpace(" "), "(BLANK)");
+        assertEquals(StringUtils.showWhiteSpace(""), "(EMPTY)");
+        assertEquals(StringUtils.showWhiteSpace(null), "(NULL)");
+        assertEquals(StringUtils.showWhiteSpace("\t\r\n"), "\\t\\r\\n");
     }
 
     /**
@@ -88,9 +98,11 @@ public class LoggerTests {
     @Test
     public void testEnableAndDisableTrace() {
         logger.logTrace(() -> "You can't see me!");
-        logger.getActiveLogLevels().put(LoggingLevel.TRACE, true);
+        boolean status = logger.enableLogLevel(LoggingLevel.TRACE);
+        assertTrue(status);
         logger.logTrace(() -> "But you can see this.");
-        logger.getActiveLogLevels().put(LoggingLevel.TRACE, false);
+        status = logger.disableLogLevel(LoggingLevel.TRACE);
+        assertTrue(status);
         logger.logTrace(() -> "You can't see me!");
     }
 
@@ -100,7 +112,7 @@ public class LoggerTests {
      */
     @Test
     public void testUsingDescendantLogger() {
-        DescendantLogger descendantLogger = new DescendantLogger((Logger)context.getLogger());
+        DescendantCanonicalLogger descendantLogger = new DescendantCanonicalLogger(context.getLogger());
         descendantLogger.logRequests(() -> "Incoming request from 123.123.123.123: foo foo");
         assertTrue((descendantLogger).doesMessageExist("Incoming request from 123.123.123.123: foo foo"));
     }

@@ -1,7 +1,7 @@
 /**
  * These classes enable outputting messages during the program run, labeled to indicate
  * the category.  It is able to do this without slowing down the system unduly.  Start
- * by reviewing {@link com.renomad.minum.logging.ILogger}
+ * by reviewing {@link com.renomad.minum.logging.model.ILogger}
  * <p>
  *     <em>Examples:</em>
  * </p>

@@ -1,7 +1,7 @@
 package com.renomad.minum.templating;
 
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
 import com.renomad.minum.testing.StopwatchUtils;
 import com.renomad.minum.utils.FileUtils;
 import org.junit.AfterClass;
@@ -21,12 +21,12 @@ public class TemplatingTests {
 
     private static FileUtils fileUtils;
     private static Context context;
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
 
     @BeforeClass
     public static void setUpClass() {
         context = buildTestingContext("unit_tests");
-        logger = (TestLogger)context.getLogger();
+        logger = (TestCanonicalLogger)context.getLogger();
         fileUtils = new FileUtils(logger, context.getConstants());
     }
 

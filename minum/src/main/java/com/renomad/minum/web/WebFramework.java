@@ -1,6 +1,9 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.logging.LoggingLevel;
+import com.renomad.minum.logging.model.ILogger;
+import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.security.ForbiddenUseException;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.UnderInvestigation;
@@ -84,7 +87,7 @@ public final class WebFramework {
     // This is just used for testing.  If it's null, we use the real time.
     private final ZonedDateTime overrideForDateTime;
     private final FullSystem fs;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
 
     /**
      * This is the minimum number of bytes in a text response to apply gzip.
@@ -175,26 +178,26 @@ public final class WebFramework {
     }
 
 
-    static void handleIOException(ISocketWrapper sw, IOException ex, ILogger logger, ITheBrig theBrig, UnderInvestigation underInvestigation, int vulnSeekingJailDuration ) {
-        logger.logDebug(() -> ex.getMessage() + " (at Server.start)");
+    static void handleIOException(ISocketWrapper sw, IOException ex, ILogger<ILoggingLevel> logger, ITheBrig theBrig, UnderInvestigation underInvestigation, int vulnSeekingJailDuration ) {
+        logger.log(() -> ex.getMessage() + " (at Server.start)", LoggingLevel.DEBUG);
         String suspiciousClues = underInvestigation.isClientLookingForVulnerabilities(ex.getMessage());
 
         if (!suspiciousClues.isEmpty() && theBrig != null) {
-            logger.logDebug(() -> sw.getRemoteAddr() + " is looking for vulnerabilities, for this: " + suspiciousClues);
+            logger.log(() -> sw.getRemoteAddr() + " is looking for vulnerabilities, for this: " + suspiciousClues, LoggingLevel.DEBUG);
             theBrig.sendToJail(sw.getRemoteAddr() + "_vuln_seeking", vulnSeekingJailDuration);
         }
     }
 
-    static void handleForbiddenUse(ISocketWrapper sw, ForbiddenUseException ex, ILogger logger, ITheBrig theBrig, int vulnSeekingJailDuration) {
-        logger.logDebug(() -> sw.getRemoteAddr() + " is looking for vulnerabilities, for this: " + ex.getMessage());
+    static void handleForbiddenUse(ISocketWrapper sw, ForbiddenUseException ex, ILogger<ILoggingLevel> logger, ITheBrig theBrig, int vulnSeekingJailDuration) {
+        logger.log(() -> sw.getRemoteAddr() + " is looking for vulnerabilities, for this: " + ex.getMessage(), LoggingLevel.DEBUG);
         if (theBrig != null) {
             theBrig.sendToJail(sw.getRemoteAddr() + "_vuln_seeking", vulnSeekingJailDuration);
         } else {
-            logger.logDebug(() -> "theBrig is null at handleForbiddenUse, will not store address in database");
+            logger.log(() -> "theBrig is null at handleForbiddenUse, will not store address in database", LoggingLevel.DEBUG);
         }
     }
 
-    static void handleReadTimedOut(ISocketWrapper sw, IOException ex, ILogger logger) {
+    static void handleReadTimedOut(ISocketWrapper sw, IOException ex, ILogger<ILoggingLevel> logger) {
         /*
         if we close the application on the server side, there's a good
         likelihood a SocketException will come bubbling through here.
@@ -203,9 +206,9 @@ public final class WebFramework {
           if we are operating in secure (i.e. SSL/TLS) mode, we get "an established connection..."
         */
         if (ex.getMessage().equals("Read timed out")) {
-            logger.logTrace(() -> "Read timed out - remote address: " + sw.getRemoteAddrWithPort());
+            logger.log(() -> "Read timed out - remote address: " + sw.getRemoteAddrWithPort(), LoggingLevel.TRACE);
         } else {
-            logger.logDebug(() -> ex.getMessage() + " - remote address: " + sw.getRemoteAddrWithPort());
+            logger.log(() -> ex.getMessage() + " - remote address: " + sw.getRemoteAddrWithPort(), LoggingLevel.TRACE);
         }
     }
 
@@ -275,7 +278,7 @@ public final class WebFramework {
     /**
      * determine if we are in a keep-alive connection
      */
-    static boolean determineIfKeepAlive(RequestLine sl, Headers hi, ILogger logger) {
+    static boolean determineIfKeepAlive(RequestLine sl, Headers hi, ILogger<ILoggingLevel> logger) {
         boolean isKeepAlive = false;
         if (sl.getVersion() == HttpVersion.ONE_DOT_ZERO) {
             isKeepAlive = hi.hasKeepAlive();
@@ -283,7 +286,7 @@ public final class WebFramework {
             isKeepAlive = ! hi.hasConnectionClose();
         }
         boolean finalIsKeepAlive = isKeepAlive;
-        logger.logTrace(() -> "Is this a keep-alive connection? " + finalIsKeepAlive);
+        logger.log(() -> "Is this a keep-alive connection? " + finalIsKeepAlive, LoggingLevel.TRACE);
         return isKeepAlive;
     }
 

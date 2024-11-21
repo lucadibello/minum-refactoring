@@ -1,7 +1,7 @@
 package com.renomad.minum.sampledomain;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.sampledomain.auth.AuthUtils;
-import com.renomad.minum.logging.ILogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.templating.TemplateProcessor;
@@ -28,7 +28,7 @@ public class ListPhotos {
 
     private final TemplateProcessor listPhotosTemplateProcessor;
     private final TemplateProcessor videoHtmlTemplateProcessor;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final Path dbDir;
 
     private final UploadPhoto up;

@@ -1,8 +1,9 @@
 package com.renomad.minum.sampledomain.auth;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.model.ILogger;
 import com.renomad.minum.logging.LoggingLevel;
 import com.renomad.minum.utils.MyThread;
 import com.renomad.minum.utils.TimeUtils;
@@ -24,7 +25,7 @@ import java.util.concurrent.ExecutorService;
 public class LoopingSessionReviewing {
 
     private final ExecutorService es;
-    private final ILogger logger;
+    private final CanonicalLogger logger;
     private final int sleepTime;
     private final AuthUtils au;
     private final Constants constants;

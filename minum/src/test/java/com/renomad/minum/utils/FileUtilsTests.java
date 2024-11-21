@@ -2,7 +2,7 @@ package com.renomad.minum.utils;
 
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.testing.RegexUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -11,21 +11,20 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
 import static com.renomad.minum.testing.TestFramework.*;
 
 public class FileUtilsTests {
     private static FileUtils fileUtils;
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
     private static Context context;
 
 
     @BeforeClass
     public static void init() {
         context = buildTestingContext("unit_tests");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
         Constants constants = context.getConstants();
         fileUtils = new FileUtils(logger, constants);
     }

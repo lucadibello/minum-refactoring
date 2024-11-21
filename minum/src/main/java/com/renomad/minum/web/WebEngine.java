@@ -1,7 +1,8 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.state.Constants;
-import com.renomad.minum.logging.ILogger;
+import com.renomad.minum.logging.model.ILogger;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.state.Context;
 
@@ -44,7 +45,7 @@ final class WebEngine {
     this.webFramework = webFramework;
   }
 
-  private final ILogger logger;
+  private final CanonicalLogger logger;
   static final String HTTP_CRLF = "\r\n";
 
   IServer startServer() {
@@ -87,7 +88,7 @@ final class WebEngine {
           boolean useExternalKeystore,
           String keystorePath,
           String keystorePassword,
-          ILogger logger) {
+          CanonicalLogger logger) {
     if (useExternalKeystore) {
       logger.logDebug(() -> "Using keystore and password referenced in minum.config");
     } else {
@@ -127,11 +128,11 @@ final class WebEngine {
    * <p>
    * We *do* bundle a cert, but it's for testing and is self-signed.
    */
-  static Boolean isProvidedKeystoreProperties(String keystorePath, String keystorePassword, ILogger logger) {
+  static Boolean isProvidedKeystoreProperties(String keystorePath, String keystorePassword, CanonicalLogger logger) {
 
     // get the directory to the keystore from a system property
     boolean hasKeystore = ! (keystorePath == null || keystorePath.isBlank());
-    if (! hasKeystore) {
+    if (!hasKeystore) {
       logger.logDebug(() -> "Keystore system property was not set");
     }
 

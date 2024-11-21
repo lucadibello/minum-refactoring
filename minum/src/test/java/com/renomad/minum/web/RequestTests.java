@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.security.ForbiddenUseException;
 import com.renomad.minum.state.Context;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -23,7 +23,7 @@ public class RequestTests {
 
     private Context context;
     private RequestLine defaultRequestLine;
-    private TestLogger logger;
+    private TestCanonicalLogger logger;
 
     @Before
     public void init() {
@@ -34,7 +34,7 @@ public class RequestTests {
                 HttpVersion.ONE_DOT_ONE,
                 "",
                 this.context.getLogger());
-        this.logger = (TestLogger)this.context.getLogger();
+        this.logger = (TestCanonicalLogger)this.context.getLogger();
     }
 
     @Test

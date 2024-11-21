@@ -199,7 +199,7 @@ public class Book {
 ```
 
 Notice how this class gets constructed with everything it will need during its lifetime - dig
-into the Context object to see its logger, constants, and information about the server.
+into the Context object to see its canonicalLogger, constants, and information about the server.
 
 The request object given to `getBookPage` will have everything received in the HTTP request.
 

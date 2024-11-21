@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.TestLogger;
+import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.logging.TestLoggerException;
 import com.renomad.minum.state.Context;
 import org.junit.AfterClass;
@@ -14,12 +14,12 @@ import static com.renomad.minum.testing.TestFramework.*;
 public class ServerTests {
 
     private static Context context;
-    private static TestLogger logger;
+    private static TestCanonicalLogger logger;
 
     @BeforeClass
     public static void init() {
         context = buildTestingContext("unit_tests");
-        logger = (TestLogger) context.getLogger();
+        logger = (TestCanonicalLogger) context.getLogger();
     }
 
     @AfterClass
