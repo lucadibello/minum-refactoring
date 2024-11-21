@@ -2,9 +2,9 @@
 
 # Run the SonarQube analysis
 sonar-scanner \
-  -Dsonar.projectKey=jinput \
-  -Dsonar.sources=jinput/coreAPI \
-  -Dsonar.java.binaries=jinput/coreAPI/target \
+  -Dsonar.projectKey=minum \
+  -Dsonar.sources=minum/src \
+  -Dsonar.java.binaries=minum/target/classes \
   -Dsonar.scm.exclusions.disabled=true \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.login=admin \
