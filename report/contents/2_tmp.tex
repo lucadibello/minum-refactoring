@@ -1,0 +1,16 @@
+\subsubsection{Java Conventions, Duplicated Code and General Design Issues}
+
+Especially inside test classes, the code is not properly organized, presenting multiple problems such as duplicated code, misuse of Java naming conventions and name shadowing. As test classes are not part of the final library, these issues will not be addressed in the refactoring process.
+
+On the other hand, the main codebase presents problems that must be addressed. The following list summarizes the main issues found in the project:
+
+\begin{itemize}
+	\item Class/interface naming issues: there are classes which do not follow neither the Java naming conventions nor the project naming conventions. For example: \texttt{TheBrig}/\texttt{ITheBrig}, \texttt{SetrfSws}, \texttt{MyThread}.
+	\item Reuse of fixed values: there are fixed values used in multiple classes, which should be extracted into constants. For example, inside the \texttt{TheRegister} class,
+	\item Even if there is a \texttt{Logger} class, there are many \texttt{System.err.println} statements in the codebase, which should be replaced by proper logging.
+\end{itemize}
+
+\subsubsection{Class-specific issues and Possible Design Patterns usage}
+
+\paragraph*{\texttt{Response} class} Inside the \textit{com.renomad.minum.web.Response} class there are different methods to build different kinds of response. This could be a good candiate in order to use the \textit{Factory Method} along with the \textit{Chain of Responsability} pattern, in order to streamline the response building process and make it more modular.
+

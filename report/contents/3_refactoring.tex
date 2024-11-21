@@ -1,15 +1,18 @@
-\subsection{SonarQube fixes}
+In the following subsections, each of the planned refactorings presented in \autoref{sec:refactoring_plan} will be detailed, providing insights into the current state of the project, and guiding the refactoring process. Refer to the respective documentation for more information on how to configure and use both tools.
 
-First of all, the refactoring process started by applying the advised fixes for code smells and bugs reported by SonarQube. 21 out of the 27 code smells were resolved without issues, on the other hand, the remiaing 6 were not fixed as they are more related on the bad design of the codebase: for example,  there are two files with a cognitive complexity of 17 and 26, which are way above the recommended value of 15. Furthermore, there are also problems related to coupling and cohesion (father call son) and name shadowing which are not easy to fix without a major refactoring of the codebase.
+\subsection{\texttt{logging} package refactoring}
 
-For this reason, the remaining code smells were not fixed and the codebase was left as it was, as they will be addressed in later steps.
+\begin{minipage}{0.5\linewidth}
+  \begin{figure}
+    \includegraphics[width=0.95\textwidth]{figures/logging_package/original.png}
+    \caption{}
+    \label{fig:}
+  \end{figure}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\end{minipage}
 
-\subsection{Libraby design}
+\subsection{\texttt{ActionQueue} - \texttt{LoggingActionQueue} refactoring}
 
-After inspecting the codebase, it was clear that the library was not designed with a clear structure in mind. The library is composed of 14 classes, each defined in a different file inside the same package. This makes the codebase hard to navigate and understand, as there is no clear separation of concerns between the classes.
-
-Furthermore, certain classes are completely documented, while others are only partially. This is probably due to the fact that the documentation was not updated when the code was modified, which makes it hard to understand what each class does. Also, classes are huge and contain a lot of methods. The following table reports useful information about the classes, such as the number of LOC, the number of methods and the number of methods per class, which are all indicators of the complexity of the codebase.
-
-Also, there is a bad structure of the codebase in terms of modules. Rather than defining a rigourous code structure in which ea
-
+\subsection{Exception classes refactoring}
 

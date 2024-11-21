@@ -1,14 +1,31 @@
-The project will be analyzed using both \href{https://www.sonarsource.com/}{SonarQube} and \textit{Pattern4j} tools. In the following section, the results of the analysis will be presented, highlighting potential code smells, bugs, vulnerabilities, and design patterns detected in the project.
+The project will be analyzed using both \href{https://www.sonarsource.com/}{SonarQube} and \textit{Pattern4j} static code analysis tools, and also by custom-made shell scripts that collect interesting metrics about the codebase.
+
+In the following section, the results of the analysis will be presented, highlighting potential code smells, bugs, vulnerabilities, and design patterns detected in the project.
 
 As the configuration and usage of both tools is out of the scope of this report, the following sections will focus on the results of the analysis, providing insights into the current state of the project, and guiding the refactoring process. Refer to the respective documentation for more information on how to configure and use both tools.
 
 \subsection{Static Analysis Tools}
 
+\subsubsection{Large class detection}
+
+In order to detect large classes, a custom bash script was developed to count the number of lines of code of each class in the project. The script uses the \texttt{cloc} tool to count the number of lines of code of each file in the project, and then orders the results by the number of lines of code in order to detect the largest classes. The following are the top 4 largest classes in the project (excluding test classes and comments):
+
+\begin{enumerate}
+	\item \texttt{com.renomad.minum.web.WebFramework} - 415 LOC
+	\item \texttt{com.renomad.minum.htmlparsing.HtmlParser} - 372 LOC
+	\item \texttt{com.renomad.minum.database.} - 219 LOC
+	\item \texttt{com.renomad.minum.web.Response} - 214 LOC
+\end{enumerate}
+
+\noindent The average number of lines of code is 55 LOC, which is considered acceptable. Due to the size of the project, the refactoring process will focus on the \texttt{Response} class, as it is the largest class in the project and is extensively used in the core package of the library, providing a good starting point.
+
+\subsubsection{Code duplication and inheritance misuse}
+
+By manually analysing the codebase, was found that inside the \texttt{logging} and \texttt{queue} package  there are multiple classes that share the same methods, which could be extracted into a common superclass in order to provide a more modular and maintainable codebase. As these two packages comprehend a total of 8 classes, this could be a good starting point for the refactoring process.
+
 \subsubsection{SonarQube analysis}
 
-After running the SonarQube analysis on the entire Minium codebase (including tests in order to get the test coverage metric), were detected a total of 588 code smells, 26 security hotspots and 34 possible bugs. In the following paragraphs the results will be briefly analyzed in order to plan the refactoring process.
-
-\paragraph*{Code smells} Out of the 588 code smells detected in the project, 109 of them are categorized as critical, 74 as major, and 405 as minor. \autoref{tab:sonarqube_severity_summary} provides a summary of the found code smells, categorized by severity.
+After running the SonarQube analysis on the entire Minium codebase (including tests in order to get the test coverage metric), were detected a total of 588 code smells, 26 security hotspots and 34 possible bugs. In the following paragraphs the results will be briefly analyzed in order to plan the refactoring process. \autoref{tab:sonarqube_severity_summary} provides a summary of the found code smells, categorized by severity.
 
 \begin{table}[H]
 	\centering
@@ -36,69 +53,32 @@ After running the SonarQube analysis on the entire Minium codebase (including te
 	\end{tabular}
 \end{table}
 
-\noindent As shown in Table \ref{tab:sonarqube_severity_summary}, the most common code smells in the project are related to Java conventions, design issues, CERT secure coding standards, and the use of HTML5 in comments.
-
-The refactoring of this project will focus on design, convention and brain-overload, as they are more related to the design and organization of the code, and can have a significant impact on the maintainability and readability of the project.
-
-\paragraph*{Security hotspots and bugs} As cited before, the SonarQube scanner detected several bugs and security hotspots in the project. The security hotsposts are related to possible \textit{Denial of Service} attacks leveraging Regular Expressions backtracking and log injection vulnerabilities.
-
-The log injection issue on the other hand is related to the use of the \texttt{Logger} class without proper sanitization of the logger name, which can lead to log injection attacks.
-
-Both security hostspots will be addressed in the refactoring process in order to enhance the security of the project.
+\noindent As shown in Table \ref{tab:sonarqube_severity_summary}, the most common code smells in the project are related to Java conventions, design issues, CERT secure coding standards. During the refactoring of the project, these issues will be taken into account in order to improve the overall quality of the codebase.
 
 \subsubsection{Pattern4j analysis}
 
 Unfortunately, the pattern4j tool was not able to analyze the entire project codebase due to the use of Java 21 features in the project. By running the tool using the custom \texttt{run-pattern4j-headless.sh} script, the following error was raised:
 
 \begin{verbatim}
-Exception in thread "main" java.lang.IllegalArgumentException: Unsupported class file major version 65
+java.lang.IllegalArgumentException: Unsupported class file major version 65
 \end{verbatim}
 
 \noindent For this reason, the design pattern usage anaylsis will be skipped. Fortunately, this step is not crucial for the refactoring of the project as it would have only provided additional insights into the design of the project rather than pinpointing specific issues.
 
-\subsubsection{Large class detection}
-
-In order to detect large classes, a custom bash script was developed to count the number of lines of code of each class in the project. The script uses the \texttt{cloc} tool to count the number of lines of code of each file in the project, and then orders the results by the number of lines of code in order to detect the largest classes. The following are the top 4 largest classes in the project (excluding test classes and comments):
-
-\begin{enumerate}
-	\item \texttt{com.renomad.minum.web.WebFramework} - 415 LOC
-	\item \texttt{com.renomad.minum.htmlparsing.HtmlParser} - 372 LOC
-	\item \texttt{com.renomad.minum.database.} - 219 LOC
-	\item \texttt{com.renomad.minum.web.Response} - 214 LOC
-\end{enumerate}
-
-\noindent The average number of lines of code is 55 LOC (5), which is considered acceptable. However, the top 4 largest classes should be refactored as they are too large.
-
-\subsection{Main Issues and Refactoring Plan}
-
-In the following sections, the most important code smells and design issues will be presented, along with a refactoring plan to address them. This allows the reader to understand the current state of the project and the steps that will be taken to improve it.
-
-\subsubsection{Codebase Structure}
+\subsubsection{Codebase structural problems}
 
 As cited in \autoref{sec:project_structure}, the project codebase is divided into 10 packages, each with a specific purpose. The overall structure of the codebase is showcase a very thorough organization, with each package containing a set of classes and interfaces related to a specific aspect of the library. However, by inspecting in more detail the structure of single packages four main issues were identified:
 
 \begin{enumerate}
-	\item The framework defines many custom exceptions in order to handle specific errors. These exceptions are scattered across the codebase and are not properly organized. This makes it difficult to understand the error handling mechanism of the library.
-	\item Especially the \texttt{util} package, contains many self-contained classes that perform specific tasks. These classes are properly documented but are not properly organized hierarchically. Also, most of these utility classes have multiple responsabilities (i.e, function to convert a string to bytes, and also methods related to authentication).
-	\item Model classes and interfaces are not properly organized in the \texttt{model} package. Each package contains a set of classes and interfaces related to a specific aspect of the library. This makes packages unnecessarily large and difficult to navigate. A better approach would be to use the a layered-architecture (model, service, repository) to organize the codebase.
-	\item There are test classes inside the \texttt{main} package, which should be moved to the \texttt{test} package. Some of them (i.e., \texttt{FullSystemTests}) have empty methods, without comments or assertions, which should be removed.
+	\item The framework defines many custom exceptions in order to handle specific errors. These exceptions are scattered across the codebase and are not properly organized. To address this issue, a new package should be created to contain all the custom exceptions, and the classes should be moved there.
+	\item Inside the \texttt{logging} package there are classes which are specific for testing purposes, which should be moved to the test package.
+	\item Inside the \texttt{util} package there are many self-contained utility classes that do not properly follow the single responsibility principle. Most of these classes contain multiple methods that are not related to each other, and should be split into multiple classes in order to improve the overall design of the project.
 \end{enumerate}
 
-\subsubsection{Java Conventions, Duplicated Code and General Design Issues}
+\subsection{Refactoring Plan}
+\label{sec:refactoring_plan}
 
-Especially inside test classes, the code is not properly organized, presenting multiple problems such as duplicated code, misuse of Java naming conventions and name shadowing. As test classes are not part of the final library, these issues will not be addressed in the refactoring process.
+As outlined in the previous sections, the Minium project presents several code smells and design issues that need to be addressed in order to improve the overall quality of the codebase. The refactoring will aim to solve the issues related to the \texttt{logging} package by providing an hierarchy of classes that will allow to better manage the logging system of the library, and allow to easily extend it in the future. The testing classes present in the \texttt{logging} package will be moved to the relative testing package.
 
-On the other hand, the main codebase presents problems that must be addressed. The following list summarizes the main issues found in the project:
-
-\begin{itemize}
-	\item Class/interface naming issues: there are classes which do not follow neither the Java naming conventions nor the project naming conventions. For example: \texttt{TheBrig}/\texttt{ITheBrig}, \texttt{SetrfSws}, \texttt{MyThread}.
-	\item Reuse of fixed values: there are fixed values used in multiple classes, which should be extracted into constants. For example, inside the \texttt{TheRegister} class,
-	\item Even if there is a \texttt{Logger} class, there are many \texttt{System.err.println} statements in the codebase, which should be replaced by proper logging.
-\end{itemize}
-
-\subsubsection{Class-specific issues and Possible Design Patterns usage}
-
-\paragraph*{\texttt{Response} class} Inside the \textit{com.renomad.minum.web.Response} class there are different methods to build different kinds of response. This could be a good candiate in order to use the \textit{Factory Method} along with the \textit{Chain of Responsability} pattern, in order to streamline the response building process and make it more modular.
-
-\paragraph*{\texttt{WebFramework} class} The \texttt{com.renomad.minum.web.WebFramework} class is the main entry point of the library, and is responsible for handling the HTTP requests and responses after the socket connection. This class is too large (around 845 LOC), and contains many methods that are not directly related to the main responsability of the class.
+Furthermore, the custom exceptions will be moved to a new package in order to better organize the codebase and, to conclude, the \texttt{Response} object will be split into multiple classes in order to reduce its complexity.
 
