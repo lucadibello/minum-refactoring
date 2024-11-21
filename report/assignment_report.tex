@@ -1,7 +1,7 @@
 \documentclass[a4paper, 11pt]{article}
 \usepackage{template}
 
-\title{Latex Assignment Template\\\large Course Name, University Name}
+\title{Refactoring the Design of an Existing Project \\\large Course Name, University Name}
 \author{Luca Di Bello}
 \date{\displaydate{today}}
 
@@ -13,11 +13,19 @@
 \input{./contents/1_introduction.tex}
 
 % Project health analysis: detected code smells, bugs, vulnerabilities, and design patterns
-\section{Project health analysis and palanned refactoring}
+\section{Project health analysis}
 \label{sec:project_health_analysis}
 \input{./contents/2_project_health_analysis.tex}
 
-% Print biblatex bibliography
-\nocite{*} % NOTE: To show all citations
+\section{Refactoring process}
+\label{sec:refactoring}
+\input{./contents/3_refactoring.tex}
+
+\section{Results and discussion}
+\label{sec:results_conclusions}
+\input{./contents/4_results.tex}
+
+% Print biblatex bibliography (if needed)
 \printbibliography
+
 \end{document}
