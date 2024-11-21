@@ -2,7 +2,7 @@ package com.renomad.minum.web;
 
 import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.utils.UtilsException;
+import com.renomad.minum.exception.UtilsException;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.After;
 import org.junit.Before;

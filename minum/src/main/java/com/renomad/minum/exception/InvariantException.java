@@ -1,4 +1,6 @@
-package com.renomad.minum.utils;
+package com.renomad.minum.exception;
+
+import com.renomad.minum.utils.Invariants;
 
 /**
  * An exception specific to our invariants.  See {@link Invariants}

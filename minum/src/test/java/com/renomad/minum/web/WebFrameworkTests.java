@@ -9,7 +9,7 @@ import com.renomad.minum.security.UnderInvestigation;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.FileReader;
 import com.renomad.minum.utils.IFileReader;
-import com.renomad.minum.utils.InvariantException;
+import com.renomad.minum.exception.InvariantException;
 import com.renomad.minum.utils.ThrowingRunnable;
 import org.junit.Before;
 import org.junit.Test;

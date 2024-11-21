@@ -1,6 +1,6 @@
 package com.renomad.minum.templating;
 
-import com.renomad.minum.utils.InvariantException;
+import com.renomad.minum.exception.InvariantException;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package com.renomad.minum.utils;
 
 import com.renomad.minum.state.Context;
 import com.renomad.minum.logging.TestCanonicalLogger;
-import com.renomad.minum.testing.TestFailureException;
+import com.renomad.minum.exception.TestFailureException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

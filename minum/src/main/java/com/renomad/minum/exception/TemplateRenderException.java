@@ -1,4 +1,4 @@
-package com.renomad.minum.templating;
+package com.renomad.minum.exception;
 
 import java.io.Serial;
 

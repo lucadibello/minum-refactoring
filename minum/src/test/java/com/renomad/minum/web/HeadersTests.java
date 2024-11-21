@@ -4,7 +4,7 @@ import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.exception.WebServerException;
 import com.renomad.minum.logging.ThrowingSupplier;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.utils.InvariantException;
+import com.renomad.minum.exception.InvariantException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

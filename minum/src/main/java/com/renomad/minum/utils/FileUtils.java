@@ -1,9 +1,8 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.exception.UtilsException;
 import com.renomad.minum.logging.CanonicalLogger;
-import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.state.Constants;
-import com.renomad.minum.logging.model.ILogger;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

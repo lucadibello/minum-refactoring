@@ -1,5 +1,7 @@
 package com.renomad.minum.templating;
 
+import com.renomad.minum.exception.TemplateRenderException;
+
 import java.util.List;
 import java.util.Map;
 

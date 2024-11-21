@@ -1,5 +1,7 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.exception.InvariantException;
+import com.renomad.minum.exception.UtilsException;
 import com.renomad.minum.sampledomain.auth.User;
 import org.junit.Test;
 

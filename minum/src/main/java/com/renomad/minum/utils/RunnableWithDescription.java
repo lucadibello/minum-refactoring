@@ -1,5 +1,7 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.exception.UtilsException;
+
 /**
  * This class is to improve maintainability in the system.  It makes
  * possible reviewing the queue of actions and more easily understanding

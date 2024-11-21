@@ -1,5 +1,7 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.exception.UtilsException;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.nio.charset.StandardCharsets;

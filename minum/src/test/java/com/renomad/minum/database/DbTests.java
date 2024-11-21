@@ -519,7 +519,7 @@ public class DbTests {
         var ex = assertThrows(DbException.class,
                 () -> db.readAndDeserialize(foosDirectory.resolve("3.ddps")));
         assertTrue(ex.getMessage().contains("Failed to deserialize") &&
-                ex.getMessage().contains("with data (\"1|2|a\"). Caused by: com.renomad.minum.utils.InvariantException: The filename must correspond to the data's index. e.g. 1.ddps must have an id of 1"));
+                ex.getMessage().contains("with data (\"1|2|a\"). Caused by: com.renomad.minum.exception.InvariantException: The filename must correspond to the data's index. e.g. 1.ddps must have an id of 1"));
     }
 
     /**
@@ -542,7 +542,7 @@ public class DbTests {
         var ex1 = assertThrows(DbException.class,
                 () -> db.readAndDeserialize(fubarDirectory.resolve("1.ddps")));
         assertTrue(ex1.getMessage().contains("Failed to deserialize") && ex1.getMessage().contains("with data (\"1|2|a\"). " +
-                "Caused by: com.renomad.minum.utils.InvariantException: deserialization of Fubar{index=0, a=0, b=''} resulted in a " +
+                "Caused by: com.renomad.minum.exception.InvariantException: deserialization of Fubar{index=0, a=0, b=''} resulted in a " +
                 "null value. Was the serialization method implemented properly?"));
     }
 

@@ -1,12 +1,13 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.exception.InvariantException;
 import com.renomad.minum.exception.WebServerException;
 import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.TheBrig;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.testing.TestFailureException;
+import com.renomad.minum.exception.TestFailureException;
 import com.renomad.minum.utils.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

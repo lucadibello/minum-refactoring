@@ -1,7 +1,7 @@
 package com.renomad.minum.web;
 
 import com.renomad.minum.exception.ForbiddenUseException;
-import com.renomad.minum.utils.UtilsException;
+import com.renomad.minum.exception.UtilsException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,5 +1,7 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.exception.UtilsException;
+
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.List;

@@ -4,7 +4,7 @@ import com.renomad.minum.htmlparsing.HtmlParseNode;
 import com.renomad.minum.htmlparsing.TagName;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.FileUtils;
-import com.renomad.minum.utils.InvariantException;
+import com.renomad.minum.exception.InvariantException;
 import com.renomad.minum.web.*;
 import com.renomad.minum.web.FunctionalTesting.TestResponse;
 import com.renomad.minum.logging.TestCanonicalLogger;

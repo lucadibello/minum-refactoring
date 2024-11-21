@@ -1,6 +1,9 @@
 package com.renomad.minum.templating;
 
 
+import com.renomad.minum.exception.TemplateParseException;
+import com.renomad.minum.exception.TemplateRenderException;
+
 import java.util.*;
 
 /**

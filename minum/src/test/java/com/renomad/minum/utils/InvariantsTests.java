@@ -1,5 +1,6 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.exception.InvariantException;
 import org.junit.Test;
 
 import java.util.Map;

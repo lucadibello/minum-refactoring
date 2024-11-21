@@ -1,5 +1,7 @@
 package com.renomad.minum.utils;
 
+import com.renomad.minum.exception.InvariantException;
+
 /**
  * Utilities for asserting invariants within the code.
  * <br>

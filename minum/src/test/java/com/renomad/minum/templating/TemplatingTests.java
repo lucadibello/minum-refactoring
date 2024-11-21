@@ -1,5 +1,7 @@
 package com.renomad.minum.templating;
 
+import com.renomad.minum.exception.TemplateParseException;
+import com.renomad.minum.exception.TemplateRenderException;
 import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.testing.StopwatchUtils;
@@ -104,7 +106,7 @@ public class TemplatingTests {
      * This *should* only require a key of "name" in the map, but
      * due to a bug in the code, I was getting this exception:
      * <pre>
-     * {@code com.renomad.minum.templating.TemplateRenderException: Missing a value for key {foo}}
+     * {@code com.renomad.minum.exception.TemplateRenderException: Missing a value for key {foo}}
      * </pre>
      */
     @Test

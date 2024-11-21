@@ -1,5 +1,6 @@
 package com.renomad.minum.testing;
 
+import com.renomad.minum.exception.TestFailureException;
 import org.junit.Test;
 
 import java.io.IOException;

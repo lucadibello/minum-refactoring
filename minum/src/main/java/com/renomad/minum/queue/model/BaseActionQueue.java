@@ -1,5 +1,6 @@
 package com.renomad.minum.queue.model;
 
+import com.renomad.minum.exception.UtilsException;
 import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.state.Context;

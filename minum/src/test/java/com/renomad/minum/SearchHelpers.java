@@ -4,7 +4,7 @@ import com.renomad.minum.htmlparsing.HtmlParseNode;
 import com.renomad.minum.htmlparsing.HtmlParser;
 import com.renomad.minum.htmlparsing.ParseNodeType;
 import com.renomad.minum.htmlparsing.TagName;
-import com.renomad.minum.utils.InvariantException;
+import com.renomad.minum.exception.InvariantException;
 import com.renomad.minum.web.Body;
 
 import java.util.ArrayList;
