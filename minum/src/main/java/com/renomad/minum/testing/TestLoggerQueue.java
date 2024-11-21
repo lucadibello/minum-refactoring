@@ -1,5 +1,7 @@
-package com.renomad.minum.logging;
+package com.renomad.minum.testing;
 
+
+import com.renomad.minum.testing.TestCanonicalLogger;
 
 import java.io.Serial;
 import java.util.ArrayDeque;

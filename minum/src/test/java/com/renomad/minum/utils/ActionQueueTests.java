@@ -1,7 +1,7 @@
 package com.renomad.minum.utils;
 
 import com.renomad.minum.exception.UtilsException;
-import com.renomad.minum.logging.TestCanonicalLogger;
+import com.renomad.minum.testing.TestCanonicalLogger;
 import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.testing.RegexUtils;

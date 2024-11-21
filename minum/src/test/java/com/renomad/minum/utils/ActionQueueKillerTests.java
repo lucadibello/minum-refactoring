@@ -1,6 +1,6 @@
 package com.renomad.minum.utils;
 
-import com.renomad.minum.logging.TestCanonicalLogger;
+import com.renomad.minum.testing.TestCanonicalLogger;
 import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.queue.ActionQueueKiller;
 import com.renomad.minum.queue.model.IActionQueue;

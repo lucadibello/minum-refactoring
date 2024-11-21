@@ -2,6 +2,8 @@ package com.renomad.minum.logging;
 
 import com.renomad.minum.exception.TestLoggerException;
 import com.renomad.minum.state.Context;
+import com.renomad.minum.testing.TestCanonicalLogger;
+import com.renomad.minum.testing.TestLoggerQueue;
 import com.renomad.minum.utils.MyThread;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +11,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static com.renomad.minum.logging.TestCanonicalLogger.MAX_CACHE_SIZE;
+import static com.renomad.minum.testing.TestCanonicalLogger.MAX_CACHE_SIZE;
 import static com.renomad.minum.testing.TestFramework.*;
 
 public class TestCanonicalLoggerTests {

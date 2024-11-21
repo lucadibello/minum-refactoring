@@ -2,7 +2,6 @@ package com.renomad.minum.testing;
 
 import com.renomad.minum.exception.TestFailureException;
 import com.renomad.minum.logging.CanonicalLogger;
-import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.queue.ActionQueueKiller;

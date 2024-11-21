@@ -1,6 +1,8 @@
-package com.renomad.minum.logging;
+package com.renomad.minum.testing;
 
 import com.renomad.minum.exception.TestLoggerException;
+import com.renomad.minum.logging.CanonicalLogger;
+import com.renomad.minum.logging.ThrowingSupplier;
 import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.utils.MyThread;
@@ -88,7 +90,7 @@ public final class TestCanonicalLogger extends CanonicalLogger {
      *    <li>If there were multiple results found</li>
      * </ol>
      */
-    static String checkValidityOfResults(String value, List<String> values, List<String> recentLogLines) {
+    public static String checkValidityOfResults(String value, List<String> values, List<String> recentLogLines) {
         int size = values.size();
         if (size == 0) {
             throw new TestLoggerException(value + " was not found in \n\t" + String.join("\n\t", recentLogLines));
@@ -127,7 +129,7 @@ public final class TestCanonicalLogger extends CanonicalLogger {
         return doesMessageExist(value, 3);
     }
 
-    static List<String> findMessage(String value, int lines, Queue<String> recentLogLines) {
+    public static List<String> findMessage(String value, int lines, Queue<String> recentLogLines) {
         if (lines > MAX_CACHE_SIZE) {
             throw new TestLoggerException(String.format("Can only get up to %s lines from the log", MAX_CACHE_SIZE));
         }

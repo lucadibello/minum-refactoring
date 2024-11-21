@@ -5,6 +5,7 @@ import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;
+import com.renomad.minum.testing.TestCanonicalLogger;
 import com.renomad.minum.utils.StringUtils;
 import org.junit.After;
 import org.junit.Before;

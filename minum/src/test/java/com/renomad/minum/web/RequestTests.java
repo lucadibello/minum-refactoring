@@ -1,7 +1,7 @@
 package com.renomad.minum.web;
 
 import com.renomad.minum.exception.WebServerException;
-import com.renomad.minum.logging.TestCanonicalLogger;
+import com.renomad.minum.testing.TestCanonicalLogger;
 import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.state.Context;
 import nl.jqno.equalsverifier.EqualsVerifier;

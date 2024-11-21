@@ -7,7 +7,7 @@ import com.renomad.minum.utils.FileUtils;
 import com.renomad.minum.exception.InvariantException;
 import com.renomad.minum.web.*;
 import com.renomad.minum.web.FunctionalTesting.TestResponse;
-import com.renomad.minum.logging.TestCanonicalLogger;
+import com.renomad.minum.testing.TestCanonicalLogger;
 import com.renomad.minum.utils.MyThread;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

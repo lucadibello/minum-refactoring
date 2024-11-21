@@ -1,6 +1,6 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.logging.TestCanonicalLogger;
+import com.renomad.minum.testing.TestCanonicalLogger;
 import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.exception.TestLoggerException;
 import com.renomad.minum.security.ITheBrig;

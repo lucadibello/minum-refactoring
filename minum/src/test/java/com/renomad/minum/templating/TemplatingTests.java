@@ -2,7 +2,7 @@ package com.renomad.minum.templating;
 
 import com.renomad.minum.exception.TemplateParseException;
 import com.renomad.minum.exception.TemplateRenderException;
-import com.renomad.minum.logging.TestCanonicalLogger;
+import com.renomad.minum.testing.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.testing.StopwatchUtils;
 import com.renomad.minum.utils.FileUtils;
