@@ -1,6 +1,7 @@
 package com.renomad.minum.htmlparsing;
 
-import com.renomad.minum.security.ForbiddenUseException;
+import com.renomad.minum.exception.ForbiddenUseException;
+import com.renomad.minum.exception.ParsingException;
 import com.renomad.minum.utils.RingBuffer;
 
 import java.io.ByteArrayInputStream;

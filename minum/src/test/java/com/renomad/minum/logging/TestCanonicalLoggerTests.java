@@ -1,5 +1,6 @@
 package com.renomad.minum.logging;
 
+import com.renomad.minum.exception.TestLoggerException;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.MyThread;
 import org.junit.Before;

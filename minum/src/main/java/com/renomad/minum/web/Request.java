@@ -1,5 +1,7 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.exception.WebServerException;
+
 import java.util.Objects;
 
 /**

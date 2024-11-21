@@ -1,6 +1,6 @@
 package com.renomad.minum.database;
 
-import com.renomad.minum.exceptions.DbException;
+import com.renomad.minum.exception.DbException;
 import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Constants;

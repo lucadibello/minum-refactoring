@@ -4,7 +4,7 @@ import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.logging.LoggingLevel;
 import com.renomad.minum.logging.model.ILogger;
 import com.renomad.minum.logging.model.ILoggingLevel;
-import com.renomad.minum.security.ForbiddenUseException;
+import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.security.ITheBrig;
 import com.renomad.minum.security.UnderInvestigation;
 import com.renomad.minum.state.Constants;

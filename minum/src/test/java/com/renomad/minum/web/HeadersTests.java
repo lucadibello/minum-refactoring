@@ -1,6 +1,7 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.security.ForbiddenUseException;
+import com.renomad.minum.exception.ForbiddenUseException;
+import com.renomad.minum.exception.WebServerException;
 import com.renomad.minum.logging.ThrowingSupplier;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.InvariantException;

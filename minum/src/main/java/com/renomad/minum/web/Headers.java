@@ -1,6 +1,7 @@
 package com.renomad.minum.web;
 
-import com.renomad.minum.security.ForbiddenUseException;
+import com.renomad.minum.exception.ForbiddenUseException;
+import com.renomad.minum.exception.WebServerException;
 
 import java.io.IOException;
 import java.io.InputStream;

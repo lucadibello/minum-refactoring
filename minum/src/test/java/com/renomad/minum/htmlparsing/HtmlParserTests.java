@@ -1,8 +1,9 @@
 package com.renomad.minum.htmlparsing;
 
 import com.renomad.minum.SearchHelpers;
+import com.renomad.minum.exception.ParsingException;
 import com.renomad.minum.state.Context;
-import com.renomad.minum.security.ForbiddenUseException;
+import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.utils.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

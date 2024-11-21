@@ -1,5 +1,6 @@
 package com.renomad.minum.security;
 
+import com.renomad.minum.exception.MinumSecurityException;
 import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Context;
 import com.renomad.minum.utils.FileUtils;

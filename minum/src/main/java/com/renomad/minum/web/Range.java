@@ -1,5 +1,7 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.exception.InvalidRangeException;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;

@@ -1,5 +1,6 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.exception.WebServerException;
 import org.junit.Test;
 
 import java.util.List;

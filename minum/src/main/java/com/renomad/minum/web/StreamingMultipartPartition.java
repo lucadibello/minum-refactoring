@@ -1,6 +1,7 @@
 package com.renomad.minum.web;
 
 
+import com.renomad.minum.exception.WebServerException;
 import com.renomad.minum.utils.RingBuffer;
 
 import java.io.ByteArrayOutputStream;

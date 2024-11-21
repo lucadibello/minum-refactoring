@@ -1,5 +1,6 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.exception.WebServerException;
 import com.renomad.minum.logging.LoggingLevel;
 import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.queue.ActionQueueKiller;

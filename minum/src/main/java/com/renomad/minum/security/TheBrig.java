@@ -1,5 +1,6 @@
 package com.renomad.minum.security;
 
+import com.renomad.minum.exception.MinumSecurityException;
 import com.renomad.minum.logging.CanonicalLogger;
 import com.renomad.minum.logging.LoggingLevel;
 import com.renomad.minum.logging.model.ILoggingLevel;

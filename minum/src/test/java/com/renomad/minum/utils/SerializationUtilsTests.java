@@ -1,6 +1,6 @@
 package com.renomad.minum.utils;
 
-import com.renomad.minum.security.ForbiddenUseException;
+import com.renomad.minum.exception.ForbiddenUseException;
 import org.junit.Test;
 
 import java.util.List;

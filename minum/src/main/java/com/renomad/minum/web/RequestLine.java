@@ -1,7 +1,7 @@
 package com.renomad.minum.web;
 
 import com.renomad.minum.logging.CanonicalLogger;
-import com.renomad.minum.security.ForbiddenUseException;
+import com.renomad.minum.exception.ForbiddenUseException;
 import com.renomad.minum.utils.StringUtils;
 
 import java.util.*;

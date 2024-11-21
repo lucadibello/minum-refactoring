@@ -1,5 +1,6 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.exception.WebServerException;
 import com.renomad.minum.logging.TestCanonicalLogger;
 import com.renomad.minum.state.Constants;
 import com.renomad.minum.state.Context;

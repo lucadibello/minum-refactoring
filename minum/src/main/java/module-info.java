@@ -12,5 +12,5 @@ module com.renomad.minum {
   exports com.renomad.minum.web;
     exports com.renomad.minum.logging.model;
     exports com.renomad.minum.queue.model;
-    exports com.renomad.minum.exceptions;
+    exports com.renomad.minum.exception;
 }

@@ -1,5 +1,6 @@
 package com.renomad.minum.logging;
 
+import com.renomad.minum.exception.TestLoggerException;
 import com.renomad.minum.logging.model.ILoggingLevel;
 import com.renomad.minum.queue.ActionQueue;
 import com.renomad.minum.state.Constants;

@@ -1,5 +1,6 @@
 package com.renomad.minum.web;
 
+import com.renomad.minum.exception.InvalidRangeException;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.renomad.minum.web;
+package com.renomad.minum.exception;
 
 /**
  * This exception is thrown if the range of bytes provided for a request
