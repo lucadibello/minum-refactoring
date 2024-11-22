@@ -77,7 +77,7 @@ As cited in \autoref{sec:project_structure}, the project codebase is divided int
 	\item Inside the \texttt{util} package there are many self-contained utility classes that do not properly follow the single responsibility principle. Most of these classes contain multiple methods that are not related to each other, and should be split into multiple classes in order to improve the overall design of the project.
 \end{enumerate}
 
-\subsection{Refactoring Plan}
+\subsection{Refactoring Plan and Goals}
 \label{sec:refactoring_plan}
 
 As outlined in the previous sections, the Minum project presents several code smells and design issues that need to be addressed in order to improve the overall quality of the codebase. The refactoring will aim to solve the issues related to the \texttt{logging} package by providing an hierarchy of classes that will allow to better manage the logging system of the library, and allow to easily extend it in the future. Also, the testing classes present in the \texttt{logging} package will be moved to the relative testing package.
