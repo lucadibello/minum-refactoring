@@ -15,23 +15,13 @@ public class DescendantCanonicalLogger extends CanonicalLogger {
 
     public static final int MAX_CACHE_SIZE = 30;
     private final Queue<String> recentLogLines;
-    private final Map<CustomLoggingLevel, Boolean> logLevels;
     private final ReentrantLock loggingLock;
 
     public DescendantCanonicalLogger(CanonicalLogger canonicalLogger) {
         super(canonicalLogger);
-        logLevels = new HashMap<>();
         this.recentLogLines = new TestLoggerQueue(MAX_CACHE_SIZE);
-        logLevels.put(CustomLoggingLevel.REQUEST, true);
+        super.enableLogLevel(CustomLoggingLevel.REQUEST);
         this.loggingLock = new ReentrantLock();
-    }
-
-    /**
-     * Allow users to get the mutable map of logging levels, which will allow
-     * them to adjust it as they wish.
-     */
-    public Map<CustomLoggingLevel, Boolean> getLogLevels() {
-        return logLevels;
     }
 
     public void logRequests(ThrowingSupplier<String, Exception> msg) {
