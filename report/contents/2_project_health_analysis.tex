@@ -4,7 +4,9 @@ In the following section, the results of the analysis will be presented, highlig
 
 As the configuration and usage of both tools is out of the scope of this report, the following sections will focus on the results of the analysis, providing insights into the current state of the project, and guiding the refactoring process. Refer to the respective documentation for more information on how to configure and use both tools.
 
-\subsection{Static Analysis Tools}
+\subsection{Static code analysis results}
+
+The following subsections will provide a summary of the results obtained from the static code analysis tools used in the project.
 
 \subsubsection{Large class detection}
 
@@ -17,15 +19,15 @@ In order to detect large classes, a custom bash script was developed to count th
 	\item \texttt{com.renomad.minum.web.Response} - 214 LOC
 \end{enumerate}
 
-\noindent The average number of lines of code is 55 LOC, which is considered acceptable. Due to the size of the project, the refactoring process will focus on the \texttt{Response} class, as it is the largest class in the project and is extensively used in the core package of the library, providing a good starting point.
+\noindent The average number of lines of code is 55 LOC, which is considered acceptable. These classes represents a good starting point for refactoring, as they represent largest classes in the project.
 
 \subsubsection{Code duplication and inheritance misuse}
 
-By manually analysing the codebase, was found that inside the \texttt{logging} and \texttt{queue} package  there are multiple classes that share the same methods, which could be extracted into a common superclass in order to provide a more modular and maintainable codebase. As these two packages comprehend a total of 8 classes, this could be a good starting point for the refactoring process.
+By manually analysing the codebase, was found that inside the \texttt{logging} and \texttt{queue} package there are multiple classes that share the same methods, which could be extracted into a common superclass in order to provide a more modular and maintainable codebase. Hence, these two classes also represent good candidates for refactoring.
 
 \subsubsection{SonarQube analysis}
 
-After running the SonarQube analysis on the entire Minium codebase (including tests in order to get the test coverage metric), were detected a total of 588 code smells, 26 security hotspots and 34 possible bugs. In the following paragraphs the results will be briefly analyzed in order to plan the refactoring process. \autoref{tab:sonarqube_severity_summary} provides a summary of the found code smells, categorized by severity.
+After running the SonarQube analysis on the entire Minum codebase (including tests in order to get the test coverage metric), were detected a total of 588 code smells, 26 security hotspots and 34 possible bugs (which were later confirmed as false-positives as in the testing code). In the following paragraphs the results will be briefly analyzed in order to plan the refactoring process. \autoref{tab:sonarqube_severity_summary} provides a summary of the found code smells, categorized by severity.
 
 \begin{table}[H]
 	\centering
@@ -53,7 +55,7 @@ After running the SonarQube analysis on the entire Minium codebase (including te
 	\end{tabular}
 \end{table}
 
-\noindent As shown in Table \ref{tab:sonarqube_severity_summary}, the most common code smells in the project are related to Java conventions, design issues, CERT secure coding standards. During the refactoring of the project, these issues will be taken into account in order to improve the overall quality of the codebase.
+\noindent As shown in Table \ref{tab:sonarqube_severity_summary}, the most common code smells in the project are related to Java conventions, design issues, CERT secure coding standards. Even if the focus of the refactoring process will be put on design issues, also the other code smells will be kept in consideration.
 
 \subsubsection{Pattern4j analysis}
 
@@ -63,7 +65,7 @@ Unfortunately, the pattern4j tool was not able to analyze the entire project cod
 java.lang.IllegalArgumentException: Unsupported class file major version 65
 \end{verbatim}
 
-\noindent For this reason, the design pattern usage anaylsis will be skipped. Fortunately, this step is not crucial for the refactoring of the project as it would have only provided additional insights into the design of the project rather than pinpointing specific issues.
+\noindent For this reason, the design pattern usage analysis will be skipped. This is not a problem for the refactoring process, as it would have only provided additional insights into the design of the project rather than pinpointing specific issues.
 
 \subsubsection{Codebase structural problems}
 
@@ -78,7 +80,6 @@ As cited in \autoref{sec:project_structure}, the project codebase is divided int
 \subsection{Refactoring Plan}
 \label{sec:refactoring_plan}
 
-As outlined in the previous sections, the Minium project presents several code smells and design issues that need to be addressed in order to improve the overall quality of the codebase. The refactoring will aim to solve the issues related to the \texttt{logging} package by providing an hierarchy of classes that will allow to better manage the logging system of the library, and allow to easily extend it in the future. The testing classes present in the \texttt{logging} package will be moved to the relative testing package.
+As outlined in the previous sections, the Minum project presents several code smells and design issues that need to be addressed in order to improve the overall quality of the codebase. The refactoring will aim to solve the issues related to the \texttt{logging} package by providing an hierarchy of classes that will allow to better manage the logging system of the library, and allow to easily extend it in the future. Also, the testing classes present in the \texttt{logging} package will be moved to the relative testing package.
 
-Furthermore, the custom exceptions will be moved to a new package in order to better organize the codebase and, to conclude, the \texttt{Response} object will be split into multiple classes in order to reduce its complexity.
-
+Furthermore, the custom exceptions will be moved to a new package in order to better organize the codebase and, to conclude, the code duplication problem that affects the \texttt{queue} will be addressed to provide a more maintainable and flexible solution.

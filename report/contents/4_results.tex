@@ -1,1 +1,25 @@
 
+\subsection{Results}
+
+Thoughtout the refactoring, the behavior of the library was not modified. The main goal was to improve the maintainability and flexibility of the codebase, by removing duplicated code, improving the overall design and ensuring adherence to best practices. In order to ensure that the refactored code behaves as expected, the library includes a comprehensive test suite composed of over 400 test cases. The test suite was also used to ensure that the refactored code behaves as expected and that no regressions were introduced. During the refactoring process, the test suite was updated to include new test cases and to use the new interfaces and classes in order to ensure that (1) the refactored code is compatible with the existing codebase and (2) the new interfaces and classes work as intended.
+
+By running the test suite, it was possible to verify that the refactored code behaves as expected and that no regressions were introduced. The output of the test suite is as follows:
+
+
+\begin{center}
+	\begin{minipage}{0.7\linewidth}
+		\begin{verbatim}
+[INFO] Tests run: 412, Failures: 0, Errors: 0, Skipped: 0
+    \end{verbatim}
+	\end{minipage}
+\end{center}
+
+\noindent \textit{Note}: in order to run the test suite, the following command should be executed: \texttt{./mvnw clean test}.
+
+\subsection{Missing refactoring opportunities and Conclusions}
+
+As examined in \autoref{sec:project_health_analysis}, the library presented many design issues that could have been avoided by following best practices, such as the \href{https://en.wikipedia.org/wiki/Single_responsibility_principle}{Single Responsibility Principle} (SRP) and the \href{https://en.wikipedia.org/wiki/Don%27t_repeat_yourself}{Don't Repeat Yourself} (DRY) principle. Unfortunately, due to the size and complexity of the library, a complete refactoring was not possible in the given timeframe. However, the refactoring process was able to address critical design issues that spanned across multiple packages, such as code duplication and inheritance misuse. The refactoring process also improved drammatically the quality of the \texttt{logging} and \texttt{queue} packages, which were the main focus of the refactoring process.
+
+The refactoring process, especially for the \texttt{logging} package, was very tedious and time consuming, due to the complex interactions between classes and the need to maintain backward compatibility with existing code. However, the effort put into refactoring process, allowed to offer a more maintainable and flexible architecture which adheres to best practices. On the other hand, the \texttt{queue} package refactoring was less complex, as after abstracting the common logic between \texttt{ActionQueue} and \texttt{LoggingActionQueue}, it was possible to remove completely the \texttt{LoggingActionQueue} class, which made the integration process easier.
+
+% One of the As examined in \autoref{sec:project_health_analysis}, the library presents many design issues that could have been avoided by following best practices. Additionally, the library entrypoint \texttt{WebFramework} class presents a design issue, as it represents a monolithic class that is responsible for handling all incoming requests. This class should be refactored to adhere to the Single Responsibility Principle (SRP) \cite{wiki:srp} thus improving the overall design of the library.
