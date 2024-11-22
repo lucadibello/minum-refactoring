@@ -1,21 +1,21 @@
 - [<span class="toc-section-number">1</span> Introduction](#introduction)
   - [<span class="toc-section-number">1.1</span> Project selection](#project-selection)
-  - [<span class="toc-section-number">1.2</span> High-level overview of the project structure](#sec:project_structure)
-  - [<span class="toc-section-number">1.3</span> Additional tools and resources](#sec:additional_tools)
+  - [<span class="toc-section-number">1.2</span> High-level overview of the project structure](#high-level-overview-of-the-project-structure)
+  - [<span class="toc-section-number">1.3</span> Additional tools and resources](#additional-tools-and-resources)
   - [<span class="toc-section-number">1.4</span> Building the project](#building-the-project)
-- [<span class="toc-section-number">2</span> Project health analysis](#sec:project_health_analysis)
+- [<span class="toc-section-number">2</span> Project health analysis](#project-health-analysis)
   - [<span class="toc-section-number">2.1</span> Static code analysis results](#static-code-analysis-results)
     - [<span class="toc-section-number">2.1.1</span> Large class detection](#large-class-detection)
     - [<span class="toc-section-number">2.1.2</span> Code duplication and inheritance misuse](#code-duplication-and-inheritance-misuse)
     - [<span class="toc-section-number">2.1.3</span> SonarQube analysis](#sonarqube-analysis)
     - [<span class="toc-section-number">2.1.4</span> Pattern4j analysis](#pattern4j-analysis)
     - [<span class="toc-section-number">2.1.5</span> Codebase structural problems](#codebase-structural-problems)
-  - [<span class="toc-section-number">2.2</span> Refactoring Goals and Planning](#sec:refactoring_plan)
-- [<span class="toc-section-number">3</span> Refactoring process](#sec:refactoring)
+  - [<span class="toc-section-number">2.2</span> Refactoring Goals and Planning](#refactoring-goals-and-planning)
+- [<span class="toc-section-number">3</span> Refactoring process](#refactoring-process)
   - [<span class="toc-section-number">3.1</span> `logging` package refactoring](#logging-package-refactoring)
   - [<span class="toc-section-number">3.2</span> Exception classes refactoring](#exception-classes-refactoring)
   - [<span class="toc-section-number">3.3</span> `queue` package refactoring](#queue-package-refactoring)
-- [<span class="toc-section-number">4</span> Results and discussion](#sec:results_conclusions)
+- [<span class="toc-section-number">4</span> Results and discussion](#results-and-discussion)
   - [<span class="toc-section-number">4.1</span> Results](#results)
   - [<span class="toc-section-number">4.2</span> Missing refactoring opportunities and Conclusions](#missing-refactoring-opportunities-and-conclusions)
 
@@ -138,7 +138,6 @@ After running the SonarQube analysis on the entire Minum codebase (including tes
 <td style="text-align: center;"><strong>Critical</strong></td>
 <td style="text-align: left;"><div id="tab:sonarqube_severity_summary">
 <table>
-<caption>SonarQube Severity Issues Summary</caption>
 <tbody>
 <tr>
 <td style="text-align: left;">design (90), suspicious (10), brain-overload (6) convention (1), multi-threading (1),</td>
@@ -154,7 +153,6 @@ After running the SonarQube analysis on the entire Minum codebase (including tes
 <td style="text-align: center;"><strong>Major</strong></td>
 <td style="text-align: left;"><div id="tab:sonarqube_severity_summary">
 <table>
-<caption>SonarQube Severity Issues Summary</caption>
 <tbody>
 <tr>
 <td style="text-align: left;">cert (40), html5 (20), obsolete (19) bad-practice (17), owasp-a3 (17), cwe (16),</td>
@@ -173,7 +171,6 @@ After running the SonarQube analysis on the entire Minum codebase (including tes
 <td style="text-align: center;"><strong>Minor</strong></td>
 <td style="text-align: left;"><div id="tab:sonarqube_severity_summary">
 <table>
-<caption>SonarQube Severity Issues Summary</caption>
 <tbody>
 <tr>
 <td style="text-align: left;">convention (374), cwe (7), java8 (5), brain-overload (4), pitfall (4), performance (2),</td>
