@@ -11,4 +11,4 @@
 !*.sty
 
 # Include all images
-!images/*
+!figures/**
