@@ -6,7 +6,7 @@ Within this package, the \texttt{Logger} class supports four logging levels: \te
 
 The library also includes a test example that demonstrates how to extend the built-in logger by defining a \texttt{DescendantLogger} class, which extends the \texttt{Logging} class in order to support a new set of logging levels encoded as the \texttt{CustomLoggingLevel} \texttt{Enum}. However, since there is no inheritance between \texttt{CustomLoggingLevel} and \texttt{LoggingLevel}, the library requires creating a separate \texttt{HashMap} to store the new logging levels. This approach results in code duplication, as the \texttt{DescendantLogger} class must reimplement all methods for managing logging levels, such as enabling/disabling levels, checking if a level is enabled, and logging messages at specific levels. This violates the DRY (\href{https://en.wikipedia.org/wiki/Don%27\_repeat\_yourself}{Don't Repeat Yourself}) principle and increases the overall complexity of the codebase.
 
-To address these design issues and create a more flexible and maintainable solution, a new abstract class, \texttt{BaseLogger}, was created. This class encapsulates the necessary data structures to manage any set of logging levels defined as \texttt{Enum} objects implementing the \texttt{ILoggingLevel} interface. This allows to store logging levels in a single \texttt{HashMap} regardless of their type, thus reducing code duplication and improving maintainability. Furthermore, a new generic interface, \texttt{ILogger<ILoggingLevel>}, was introduced. This interface includes a method, \texttt{log(String, ILoggingLevel)}, which is implemented by the \texttt{BaseLogger} class. This improved design is illustrated in \autoref{fig:refactored_logging}.
+To address these design issues and create a more flexible and maintainable solution, a new abstract class, \texttt{BaseLogger}, was created. This class encapsulates the necessary data structures to manage any set of logging levels defined as \texttt{Enum} objects implementing the \texttt{ILoggingLevel} interface. This allows to store logging levels in a single \texttt{HashMap} regardless of their type, thus reducing code duplication and improving maintainability. Furthermore, a new generic interface, \texttt{ILogger<ILoggingLevel>}, was introduced. This interface includes a method, \texttt{log(String, ILoggingLevel)}, which is implemented by the \texttt{BaseLogger} class. This improved design is illustrated in \autoref{fig:refactored-logging}.
 
 % Logging package original
 \begin{minipage}{0.4\linewidth}
@@ -14,7 +14,7 @@ To address these design issues and create a more flexible and maintainable solut
 		\begin{center}
 			\includegraphics[width=0.95\textwidth]{figures/logging_package/original.png}
 			\caption{Original \texttt{logging} package}
-			\label{fig:original_logging}
+			\label{fig:original-logging}
 		\end{center}
 	\end{figure}
 \end{minipage}
@@ -23,7 +23,7 @@ To address these design issues and create a more flexible and maintainable solut
 		\begin{center}
 			\includegraphics[width=0.95\textwidth]{figures/logging_package/refactored.png}
 			\caption{Refactored \texttt{logging} package}
-			\label{fig:refactored_logging}
+			\label{fig:refactored-logging}
 		\end{center}
 	\end{figure}
 \end{minipage}
@@ -42,9 +42,9 @@ All exception classes are now in a single \texttt{exception} package in order to
 
 \subsection{\texttt{queue} package refactoring}
 
-The library defines a class \texttt{ActionQueue} that represents a queue of actions to be executed asynchronously by a thread. It receives a list of actions and executes them in the order they were added. For the development of the library, it was necessary to create a new class, \texttt{LoggingActionQueue}, which executes actions in a slight different way than \texttt{ActionQueue}. With the current architecture, \texttt{LoggingActionQueue} is almost an exact copy of \texttt{ActionQueue}. Refer to \autoref{fig:original_queue} for UML diagram of the original design.
+The library defines a class \texttt{ActionQueue} that represents a queue of actions to be executed asynchronously by a thread. It receives a list of actions and executes them in the order they were added. For the development of the library, it was necessary to create a new class, \texttt{LoggingActionQueue}, which executes actions in a slight different way than \texttt{ActionQueue}. With the current architecture, \texttt{LoggingActionQueue} is almost an exact copy of \texttt{ActionQueue}. Refer to \autoref{fig:original-queue} for UML diagram of the original design.
 
-To solve this issue, a new abstract class, \texttt{BaseActionQueue}, was created. This class encapsulates the common logic between \texttt{ActionQueue} and \texttt{LoggingActionQueue}, allowing to reduce code duplication and improve maintainability. After further analysis, was possible to remove completely the \texttt{LoggingActionQueue} class, as it was no longer necessary. The new design is illustrated in \autoref{fig:refactored_queue}.
+To solve this issue, a new abstract class, \texttt{BaseActionQueue}, was created. This class encapsulates the common logic between \texttt{ActionQueue} and \texttt{LoggingActionQueue}, allowing to reduce code duplication and improve maintainability. After further analysis, was possible to remove completely the \texttt{LoggingActionQueue} class, as it was no longer necessary. The new design is illustrated in \autoref{fig:refactored-queue}.
 
 % Logging package original
 \begin{minipage}{0.5\linewidth}
@@ -52,7 +52,7 @@ To solve this issue, a new abstract class, \texttt{BaseActionQueue}, was created
 		\begin{center}
 			\includegraphics[width=0.95\textwidth]{figures/queue_package/original.png}
 			\caption{Original \texttt{queue} package}
-			\label{fig:original_queue}
+			\label{fig:original-queue}
 		\end{center}
 	\end{figure}
 \end{minipage}
@@ -61,7 +61,7 @@ To solve this issue, a new abstract class, \texttt{BaseActionQueue}, was created
 		\begin{center}
 			\includegraphics[width=0.95\textwidth]{figures/queue_package/refactored.png}
 			\caption{Refactored \texttt{queue} package}
-			\label{fig:refactored_queue}
+			\label{fig:refactored-queue}
 		\end{center}
 	\end{figure}
 \end{minipage}

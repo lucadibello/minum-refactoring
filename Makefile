@@ -13,7 +13,7 @@ build:
 	cd $(DIR) && $(MAVEN) clean package -pl coreAPI
 
 export:
-	@cd report && pandoc assignment_report.tex -o ../README.md \
+	@cd report && pandoc tmp.tex -o ../README.md \
     --from=latex \
     --to=gfm \
     --wrap=none \
