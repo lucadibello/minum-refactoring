@@ -69,7 +69,7 @@ java.lang.IllegalArgumentException: Unsupported class file major version 65
 
 \subsubsection{Codebase structural problems}
 
-As cited in \autoref{sec:project_structure}, the project codebase is divided into 10 packages, each with a specific purpose. The overall structure of the codebase is showcase a very thorough organization, with each package containing a set of classes and interfaces related to a specific aspect of the library. However, by inspecting in more detail the structure of single packages four main issues were identified:
+As cited in \autoref{sec:project_structure}, the project codebase is divided into 10 packages, each with a specific purpose. The overall structure of the codebase is showcase a very thorough organization, with each package containing a set of classes and interfaces related to a specific aspect of the library. However, by inspecting in more detail the structure of single packages three main issues were identified:
 
 \begin{enumerate}
 	\item The framework defines many custom exceptions in order to handle specific errors. These exceptions are scattered across the codebase and are not properly organized. To address this issue, a new package should be created to contain all the custom exceptions, and the classes should be moved there.
@@ -77,9 +77,11 @@ As cited in \autoref{sec:project_structure}, the project codebase is divided int
 	\item Inside the \texttt{util} package there are many self-contained utility classes that do not properly follow the single responsibility principle. Most of these classes contain multiple methods that are not related to each other, and should be split into multiple classes in order to improve the overall design of the project.
 \end{enumerate}
 
-\subsection{Refactoring Plan and Goals}
+\subsection{Refactoring Goals and Planning}
 \label{sec:refactoring_plan}
 
-As outlined in the previous sections, the Minum project presents several code smells and design issues that need to be addressed in order to improve the overall quality of the codebase. The refactoring will aim to solve the issues related to the \texttt{logging} package by providing an hierarchy of classes that will allow to better manage the logging system of the library, and allow to easily extend it in the future. Also, the testing classes present in the \texttt{logging} package will be moved to the relative testing package.
+The main goal of the refactoring is to improve the maintainability and flexibility of the codebase, by removing duplicated code, improving the overall design and ensuring adherence to best practices.
+
+As outlined in the previous sections, the Minum project presents several code smells and design issues that need to be addressed in order to improve the overall quality of the codebase. The refactoring will aim to solve the issues related to the \texttt{logging} package by providing an hierarchy of classes allowing to better manage the logging system of the library, and make it easily extendible in the future. Additionally, the testing classes present in the \texttt{logging} package will be moved to the relative test module in order to keep the codebase organized.
 
 Furthermore, the custom exceptions will be moved to a new package in order to better organize the codebase and, to conclude, the code duplication problem that affects the \texttt{queue} will be addressed to provide a more maintainable and flexible solution.
