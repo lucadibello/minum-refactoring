@@ -228,12 +228,12 @@ The library also includes a test example that demonstrates how to extend the bui
 To address these design issues and create a more flexible and maintainable solution, a new abstract class, `BaseLogger`, was created. This class encapsulates the necessary data structures to manage any set of logging levels defined as `Enum` objects implementing the `ILoggingLevel` interface. This allows to store logging levels in a single `HashMap` regardless of their type, thus reducing code duplication and improving maintainability. Furthermore, a new generic interface, `ILogger<ILoggingLevel>`, was introduced. This interface includes a method `log(String, ILoggingLevel)`, which is implemented by the `BaseLogger` class to log messages at a specific logging level. This improved design is illustrated in <a href="#fig:refactored-logging" data-reference-type="ref+label" data-reference="fig:refactored-logging">2</a>.
 
 <figure id="fig:original-logging">
-<img src="figures/logging_package/original.png" style="width:95.0%" alt="Figure 1: Original logging package" />
+<img src="./report/figures/logging_package/original.png" style="width:95.0%" alt="Figure 1: Original logging package" />
 <figcaption aria-hidden="true">Figure 1: Original <code>logging</code> package</figcaption>
 </figure>
 
 <figure id="fig:refactored-logging">
-<img src="figures/logging_package/refactored.png" style="width:95.0%" alt="Figure 2: Refactored logging package" />
+<img src="./report/figures/logging_package/refactored.png" style="width:95.0%" alt="Figure 2: Refactored logging package" />
 <figcaption aria-hidden="true">Figure 2: Refactored <code>logging</code> package</figcaption>
 </figure>
 
@@ -256,12 +256,12 @@ The library defines a class `ActionQueue` that represents a queue of actions to 
 To solve this issue, a new abstract class, `BaseActionQueue`, was created. This class encapsulates the common logic between `ActionQueue` and `LoggingActionQueue`, allowing to reduce code duplication and improve maintainability. After further analysis, was possible to remove completely the `LoggingActionQueue` class, as it was no longer necessary. The new design is illustrated in <a href="#fig:refactored-queue" data-reference-type="ref+label" data-reference="fig:refactored-queue">4</a>.
 
 <figure id="fig:original-queue">
-<img src="figures/queue_package/original.png" style="width:95.0%" alt="Figure 3: Original queue package" />
+<img src="./report/figures/queue_package/original.png" style="width:95.0%" alt="Figure 3: Original queue package" />
 <figcaption aria-hidden="true">Figure 3: Original <code>queue</code> package</figcaption>
 </figure>
 
 <figure id="fig:refactored-queue">
-<img src="figures/queue_package/refactored.png" style="width:95.0%" alt="Figure 4: Refactored queue package" />
+<img src="./report/figures/queue_package/refactored.png" style="width:95.0%" alt="Figure 4: Refactored queue package" />
 <figcaption aria-hidden="true">Figure 4: Refactored <code>queue</code> package</figcaption>
 </figure>
 
